@@ -1,0 +1,72 @@
+<div
+    [formGroup]="_oDetailService.form.formGroup"
+    ngxsForm="oDetail"
+    *ngIf="_oDetailService.formIsLoaded as loaded">
+
+    <div class="grid grid-cols-3 gap-2 pt-10">
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div><div></div>
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operationMethod"></ng-container></div><div></div>
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operationType"></ng-container></div><div></div>
+    </div>
+
+<!-- ============================================================================== -->
+<!-- ===========================       TEMPLATE        ============================ -->
+<!-- ============================================================================== -->
+
+    <!-- ===========================       label        ============================ -->
+    <ng-template #tp_label>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Libellé</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.label"
+                [formControlName]="property.label">
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       operationMethod        ============================ -->
+    <ng-template #tp_operationMethod>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Méthode opération</mat-label>
+            <mat-select
+                [attr.data-cy]="property.operationMethod"
+                [formControlName]="property.operationMethod"
+                [compareWith]="compareObjects">
+                    <mat-option *ngFor="let item of (_oDetailService.stateFilter$ | async)?.datas?.operationMethod" [value]="item">
+                        {{ item?.label }}
+                    </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       operationType        ============================ -->
+    <ng-template #tp_operationType>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Type opération</mat-label>
+            <mat-select
+                [attr.data-cy]="property.operationType"
+                [formControlName]="property.operationType"
+                [compareWith]="compareObjects">
+                    <mat-optgroup *ngFor="let group of (_oDetailService.stateFilter$ | async)?.datas?.operationType" [label]="group.label">
+                        <mat-option *ngFor="let item of group.selects" [value]="item">
+                            {{ item?.label }}
+                        </mat-option>
+                    </mat-optgroup>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+        <!-- <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Type opération</mat-label>
+            <mat-select
+                [attr.data-cy]="property.operationType"
+                [formControlName]="property.operationType"
+                [compareWith]="compareObjects">
+                    <mat-option *ngFor="let item of (_oDetailService.stateFilter$ | async)?.datas?.operationType" [value]="item">
+                        {{ item?.label }}
+                    </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template> -->
+
+</div>

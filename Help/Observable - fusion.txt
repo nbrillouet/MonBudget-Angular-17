@@ -1,0 +1,22 @@
+[permet de fusionner 2 observable en 1]
+
+==> dans composant:
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
+
+ngOnInit () {
+
+	let obs = Observable.combineLatest( [
+	this.route.paramMap,
+	this.route.queryParamMap
+	])
+	.subscribe(combined => {
+		let id = combined[0].get('id');
+		let page = combined[1].get('page');
+		
+		this.service.getAll()
+			.subscribe(followers => this.followers = followers);
+	});
+	
+
+}

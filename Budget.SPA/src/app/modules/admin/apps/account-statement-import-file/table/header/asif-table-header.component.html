@@ -1,0 +1,50 @@
+<div class="grid grid-cols-2 gap-2 justify-items-strech p-6 pb-0 dark"
+    [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference?.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;">
+    <div>
+        <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">Relevés brut</div>
+        <div class="flex items-center mt-0.5 font-medium text-gray-50">
+            {{ _asifTableService?.filterAsifSelected?.asiBankAgencyLabel }}
+        </div>
+    </div>
+    <div class='justify-self-end'>
+        <button
+            mat-flat-button
+            [color]="'primary'"
+            (click)="saveInAccountStatement()">
+            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+            <span class="ml-2 mr-1">Sauvegarde compte(s)</span>
+        </button>
+    </div>
+    <div>
+        <div class="flex items-center">
+            <div class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover">
+                <div class="sm:text-lg leading-6 truncate">{{ _asifTableService?.filterAsifSelected?.account?.label }}</div>
+            </div>
+            <div class="ml-px rounded-tr-xl bg-hover">
+                <button
+                    [matMenuTriggerFor]="projectsMenu"
+                    mat-icon-button>
+                    <mat-icon [svgIcon]="'heroicons_outline:dots-horizontal'"></mat-icon>
+                </button>
+                <mat-menu #projectsMenu="matMenu">
+                    <button
+                        mat-menu-item
+                        *ngFor="let account of (_asifTableService.stateSelection$ | async)?.selection?.account"
+                        (click)="accountChange(account)">
+                        <span>{{account.label}}</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+    <div class='flex justify-end'>
+        <div
+            class="rounded-t-xl px-4 py-2 ml-1 dark cursor-pointer"
+            [ngClass]="(_asifTableService.stateSelected$ | async )?.selected?.state?.id===state.id ?'text-default':'text-secondary'"
+            *ngFor="let state of (_asifTableService.stateSelection$ | async)?.selection?.state; index as i"
+            (click)="onAsifStateChanged(state)">
+            {{ state.label }}
+        </div>
+    </div>
+</div>

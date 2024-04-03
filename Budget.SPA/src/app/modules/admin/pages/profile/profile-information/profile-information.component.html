@@ -1,0 +1,26 @@
+    <div
+        ngxsForm="userDetail"
+        [formGroup]="_profileService.form.formGroup"
+        *ngIf="_profileService.form else tp_progress"
+        class="flex flex-auto justify-center w-full  mx-auto p-6 sm:p-8">
+
+
+        <div class="flex-auto mt-4 sm:mt-6">
+            <div class="w-full max-w-screen-xl mx-auto">
+                <div class="grid grid-cols-6 gap-6 w-full">
+                    <profile-about-me class="col-span-2"></profile-about-me>
+                    <profile-localisation class="col-span-4"></profile-localisation>
+                    <!-- <profile-preference class="col-span-6"></profile-preference> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #tp_progress>
+        <mat-progress-bar
+            color="primary"
+            mode="indeterminate">
+        </mat-progress-bar>
+    </ng-template>
+
+

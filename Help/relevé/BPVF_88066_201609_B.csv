@@ -1,0 +1,59 @@
+Compte;Date de comptabilisation;Date opération;Libellé;Référence;Date valeur;Montant
+30919688066;12/09/2016;12/09/2016;commission facturette cb 090916 cb*416318720 plantation on cus crystal rive			;brgk2dr;12/09/2016;-2,11
+30919688066;13/09/2016;14/09/2016;110916 cb*416318720 4325 hwy 51 suius laplace 102,50usd								;bt3hxdi;11/09/2016;-91,26
+30919688066;13/09/2016;14/09/2016;frais commission retrait 110916 cb*416318720 4325 hwy 51 suius laplace				;bt3hxdi;14/09/2016;-5,18
+30919688066;13/09/2016;13/09/2016;carte 100916 cb*41631872 lsuconcessions2us baton rouge 17,00usd						;bt43dp1;13/09/2016;-15,14
+30919688066;13/09/2016;13/09/2016;carte 100916 cb*41631872 derailed diner us robertsdale 30,71usd						;bt43dp2;13/09/2016;-27,34
+30919688066;13/09/2016;13/09/2016;carte 100916 cb*41631872 860 lsu team shus baton rouge 43,49usd						;bt43dp3;13/09/2016;-38,72
+30919688066;13/09/2016;13/09/2016;commission facturette cb 100916 cb*416318720 lsuconcessions2us baton rouge			;bt43dp1;13/09/2016;-0,37
+30919688066;13/09/2016;13/09/2016;commission facturette cb 100916 cb*416318720 derailed diner us robertsdale			;bt43dp2;13/09/2016;-0,68
+30919688066;13/09/2016;13/09/2016;commission facturette cb 100916 cb*416318720 860 lsu team shus baton rouge			;bt43dp3;13/09/2016;-0,96
+30919688066;14/09/2016;15/09/2016;120916 cb*416318720 3645 la 18 us vacherie 102,75usd									;bur19v5;12/09/2016;-91,77
+30919688066;14/09/2016;15/09/2016;frais commission retrait 120916 cb*416318720 3645 la 18 us vacherie					;bur19v5;12/09/2016;-5,19
+30919688066;14/09/2016;14/09/2016;carte 100916 cb*41631872 exxonmobil 4us slidell 15,50usd								;burmq4z;14/09/2016;-13,84
+30919688066;14/09/2016;14/09/2016;carte 100916 cb*41631872 exxonmobil 4us slidell 20,54usd								;burmq50;14/09/2016;-18,34
+30919688066;14/09/2016;14/09/2016;commission facturette cb 100916 cb*416318720 exxonmobil 4us slidell					;burmq4z;14/09/2016;-0,34
+30919688066;14/09/2016;14/09/2016;commission facturette cb 100916 cb*416318720 exxonmobil 4us slidell					;burmq50;14/09/2016;-0,45
+30919688066;15/09/2016;15/09/2016;carte 130916 cb*41631872 premium parkingus new orleans 6,00usd						;bwf62m8;15/09/2016;-5,35
+30919688066;15/09/2016;15/09/2016;carte 120916 cb*41631872 shell oil 51770us plattenville 26,20usd						;bwf62m9;15/09/2016;-23,37
+30919688066;15/09/2016;15/09/2016;carte 130916 cb*41631872 destrehan plantus destrehan 41,20usd							;bwf62ma;15/09/2016;-36,75
+30919688066;15/09/2016;15/09/2016;carte 120916 cb*41631872 spahr's seafoodus thibodaux 53,71usd							;bwf62mb;15/09/2016;-47,90
+30919688066;15/09/2016;15/09/2016;commission facturette cb 130916 cb*416318720 premium parkingus new orleans			;bwf62m8;15/09/2016;-0,13
+30919688066;15/09/2016;15/09/2016;commission facturette cb 120916 cb*416318720 shell oil 51770us plattenville			;bwf62m9;15/09/2016;-0,58
+30919688066;15/09/2016;15/09/2016;commission facturette cb 130916 cb*416318720 destrehan plantus destrehan				;bwf62ma;15/09/2016;-0,91
+30919688066;15/09/2016;15/09/2016;commission facturette cb 120916 cb*416318720 spahr's seafoodus thibodaux				;bwf62mb;15/09/2016;-1,19
+30919688066;16/09/2016;16/09/2016;carte 130916 cb*41631872 the praline conus new orleans 66,52usd						;by2pf2o;16/09/2016;-59,39
+30919688066;16/09/2016;16/09/2016;commission facturette cb 130916 cb*416318720 the praline conus new orleans			;by2pf2o;16/09/2016;-1,48
+30919688066;19/09/2016;19/09/2016;carte 140916 cb*41631872 mardi gras mayhus new orleans 27,54usd						;c31ghrt;19/09/2016;-24,56
+30919688066;19/09/2016;19/09/2016;carte 140916 cb*41631872 the marigny braus new orleans 54,96usd						;c31bhru;19/09/2016;-49,01
+30919688066;19/09/2016;19/09/2016;carte 150916 cb*41631872 the old coffee us new orleans 38,86usd						;c31bhrv;19/09/2016;-34,76
+30919688066;19/09/2016;19/09/2016;commission facturette cb 140916 cb*416318720 mardi gras mayhus new orleans			;c31bhrt;19/09/2016;-0,61
+30919688066;19/09/2016;19/09/2016;commission facturette cb 140916 cb*416318720 the marigny braus new orleans			;c31bhru;19/09/2016;-1,22
+30919688066;19/09/2016;19/09/2016;commission facturette cb 150916 cb*416318720 the old coffee us new orleans			;c31bhrv;19/09/2016;-0,86
+30919688066;20/09/2016;19/09/2016;annul. 180916 cb*4163187 tom thumb 154 us mary esther 11,40usd						;c4o9cwl;19/09/2016;9,88
+30919688066;20/09/2016;19/09/2016;retro rembt commission c 180916 cb*416318720 tom thumb 154 us mary esther				;c4o9cwl;20/09/2016;0,25
+30919688066;20/09/2016;20/09/2016;carte 180916 cb*41631872 tom thumb 154 us mary esther 30,00usd						;c4out54;20/09/2016;-26,84
+30919688066;20/09/2016;20/09/2016;commission facturette cb 180916 cb*416318720 tom thumb 154 us mary esther				;c4out54;20/09/2016;-0,67
+30919688066;21/09/2016;21/09/2016;carte 190916 cb*41631872 rodeo mexican rus waycross 36,30usd							;c6ce5jl;21/09/2016;-32,57
+30919688066;21/09/2016;21/09/2016;carte 190916 cb*41631872 jasmine cafe us tallahassee 40,33usd							;c6ce5jm;21/09/2016;-36,19
+30919688066;21/09/2016;21/09/2016;commission facturette cb 190916 cb*416318720 rodeo mexican rus waycross				;c6ce5jl;21/09/2016;-0,81
+30919688066;21/09/2016;21/09/2016;commission facturette cb 190916 cb*416318720 jasmine cafe tallahassee					;c6ce5jm;21/09/2016;-0,90
+30919688066;22/09/2016;22/09/2016;carte 210916 cb*41631872 burger king 42us kissimmee 13,91usd							;c7zxi04;22/09/2016;-12,46
+30919688066;22/09/2016;22/09/2016;carte 190616 cb*41631872 days inn us waycross 45,82usd								;c7zxi05;22/09/2016;-41,04
+30919688066;22/09/2016;22/09/2016;commission facturette cb 210916 cb*416318720 burger king 42us kissimmee				;c7zxi04;22/09/2016;-0,31
+30919688066;22/09/2016;22/09/2016;commission facturette cb 190916 cb416318720 days inn us waycross 						;c7zxi05;22/09/2016;-1,02
+30919688066;23/09/2016;23/09/2016;carte 210916 cb*41631872 pacino's us kissimmee 56,01usd								;c9ngugl;23/09/2016;-50,37
+30919688066;23/09/2016;23/09/2016;commission facturette cb 210916 cb*416318720 pacino's us kissimmee					;c9ngugl;23/09/2016;-1,25
+30919688066;26/09/2016;26/09/2016;prlv sepa direction gene 6000															;035yv7u;26/09/2016;-1319,00
+30919688066;26/09/2016;26/09/2016;carte 220916 cb*41631872 quality suites us kissimmee 176,40							;cem2xef;26/09/2016;-157,63
+30919688066;26/09/2016;26/09/2016;commission facturette cb 220916 cb*416318720 quality suites us kissimmee				;cem2xef;26/09/2016;-3,94
+30919688066;26/09/2016;26/09/2016;carte 240916 cb*41631872 jules 91massy												;celils5;26/09/2016;-99,99
+30919688066;28/09/2016;27/09/2016;pantin edouard v retrait du 270916 carte: *416318720									;chwk99w;27/09/2016;-40,00
+30919688066;28/09/2016;28/09/2016;carte 270916 cb*41631872 ratp 75paris cedex 1											;chwkhit;28/09/2016;-22,15
+30919688066;29/09/2016;29/09/2016;frais confirmation de vi ht: 															;0008797;29/09/2016;-0,50
+30919688066;30/09/2016;30/09/2016;prlv sepa sfr sfr mobile prlvt sepa 99-19vqxm											;036nj6d;30/09/2016;-25,99
+30919688066;01/10/2016;30/09/2016;cotisation affinea xccn																;0009538;30/09/2016;-6,43
+30919688066;03/10/2016;03/10/2016;virement sepa virement alliance concep												;cqvasbu;03/10/2016;2776,59
+30919688066;03/10/2016;03/10/2016;carte 300916 cb*41631872 les moulins 93 pantin										;cq6a6if;03/10/2016;-17,10
+30919688066;04/10/2016;03/10/2016;pantin edouard v retrait du 031016 carte: *416318720									;crtsghp;03/10/2016;-40,00
+30919688066;05/10/2016;05/10/2016;carte 041016 cb*41631872 petit vapoteur 50tourlaville												;cthby1o;05/10/2016;-58,75

@@ -1,0 +1,5 @@
+
+//voir la liste
+yarn config list
+//ajouter registry
+npm config set registry http://tfs:8081/repository/npm-group/

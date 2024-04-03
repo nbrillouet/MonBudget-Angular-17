@@ -1,0 +1,19 @@
+﻿ng new search-highlighter --create-application=false
+
+ng g library search-highlighter --prefix=lib
+	--> –prefix=gt: this will change your component prefix i.e <app-my-lib> to <gt-my-lib>
+ng generate library @subfolder/my-lib
+	--> @subfolder: specifie le dossier dans projetcs
+
+VS CODE: ctrl+shift + P : reinit typescript tsconfig
+
+LINK
+--> dans le dist de la lib
+$ cd ./dist/my-lib
+$ npm link
+
+--> dans l'appli
+$ cd my-app
+$ npm link my-lib
+	
+

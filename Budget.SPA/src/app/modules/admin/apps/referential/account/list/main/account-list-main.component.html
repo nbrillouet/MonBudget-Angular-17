@@ -1,0 +1,22 @@
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+    *ngIf="_accountListService.isStateLoaded else tp_progress;">
+
+    <!-- Header -->
+    <account-list-header></account-list-header>
+
+    <!-- content -->
+    <div
+        class="flex-auto -mt-16 p-6 sm:p-10 rounded-tl-2xl shadow bg-card bg-gray-100"
+        fuseScrollbar>
+        <account-list-content></account-list-content>
+    </div>
+</div>
+
+<!-- PROGRESS -->
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

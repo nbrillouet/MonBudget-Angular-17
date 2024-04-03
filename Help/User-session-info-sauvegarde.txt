@@ -1,0 +1,31 @@
+permet de sauvegarder les infos du user en cours (en dehors du token)
+
+[implementation]
+
+--> dans .net: AuthController.cs / Login()
+--> en dessous de tokenString:
+var user = _mapper.Map<UserForDetailedDto>(userRetrieve);
+return Ok(new { tokenString, user });
+
+--> dans Angular: AuthService.ts
+add property : currentUser: User;
+--> dans login:
+localStorage.setItem('user', JSON.stringify(user.user));
+ 
+this.currentUser = user.user; 
+
+--> dans Angular: App.component.ts / ngInit
+const user: User = JSON.parse(localStorage.getItem('user'));
+if (user){
+
+            this.authService.currentUser = user;
+
+        }
+
+--> dans Angular: toolbar.component.ts / logout()
+this.authService.currentUser = null;
+localStorage.removeItem('user');
+
+--> dans Angular: toolbar.component.html
+<img class="avatar" *ngIf="authService.currentUser.avatarUrl" src="{{authService.currentUser.avatarUrl}}">
+         <img class="avatar" *ngIf="!authService.currentUser.avatarUrl" src="assets/images/avatars/profile.jpg">

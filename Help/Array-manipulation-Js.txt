@@ -1,0 +1,10 @@
+[library: Underscore]
+
+[installation] --> deja dand Fuse
+npm install underscore --save
+npm install @types/underscore --save
+
+[import dans le composant]
+import * as _ from 'underscore';
+
+[utilisation]

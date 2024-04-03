@@ -1,0 +1,17 @@
+<div
+class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+*ngIf="_oDetailService.formIsLoaded as loaded else tp_progress">
+
+<!-- HEADER -->
+<o-detail-header></o-detail-header>
+
+<!-- CONTENT -->
+<o-detail-content class="flex-auto -mt-5 p-6 sm:p-10 rounded-t-2xl shadow bg-card" fuseScrollbar></o-detail-content>
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

@@ -1,0 +1,20 @@
+SELECT *
+FROM 
+(
+SELECT 
+	P.ID as ID_PLAN,
+	AST.ID as ID_ACCOUNT_STATEMENT,
+	AST.LABEL_OPERATION 
+
+from [as].Account_statement AST
+inner join [plan].Plan_account PA
+	on PA.ID_ACCOUNT=AST.ID_ACCOUNT
+inner join [plan].[plan] P
+	on P.ID = PA.ID_PLAN
+	and P.[YEAR]=YEAR(AST.DATE_INTEGRATION)
+) AS A
+WHERE  NOT EXISTS (SELECT 1 
+                   FROM   (select * from [as].ACCOUNT_STATEMENT_PLAN ) as B
+                   WHERE  A.ID_PLAN = B.ID_PLAN
+				   AND A.ID_ACCOUNT_STATEMENT=B.ID_ACCOUNT_STATEMENT
+				   )

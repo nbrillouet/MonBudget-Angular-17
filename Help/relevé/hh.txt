@@ -1,0 +1,9 @@
+30919688066;17/03/2022;17/03/2022;140320 cb****0569 sc-boul lemonni91villebon sur;									xxxxxxx;17/03/2022;-3.65
+30919688066;17/02/2022;17/02/2022;prlv sepa direction gene prelevement a la source revenus nnfr46zzz;				xxxxxxx;17/02/2022;-22.00
+30919688066;03/04/2022;03/04/2022;prlv sepa navigo annuel navigo annuel fr42zzz457385999999504;						xxxxxxx;03/04/2022;-75.20
+30919688066;27/03/2022;27/02/2022;prlv sepa sfr sfr mobile prlvt sepa 99-19vqxm;									xxxxxxx;27/03/2022;-10.00
+30919688066;03/01/2022;31/12/2022;frais Conf Virt Mail EmeXCVEP002.2019123100360928000001 #1 Operation;				xxxxxxx;31/12/2022;-0.25
+30919688066;03/03/2022;29/02/2022;Cotisation Affinea XCCNV999 2020013000002738000001 CONTRATCNV200092950;			xxxxxxx;29/02/2022;-6.74
+30919688066;14/06/2022;14/06/2022;virement genassur adp2 ref mut 0040272;											xxxxxxx;14/06/2022;9.00
+30919688066;08/04/2022;08/04/2022;droits de garde droits de garde ttc cpte 873091968806;							xxxxxxx;08/04/2022;-9.71
+

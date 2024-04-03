@@ -1,0 +1,86 @@
+[implementation module]
+router à ajouter dans module: (app.module)
+const appRoutes: Routes = [
+{ path : '', component : FuseSampleComponent, canActivate: [AuthGuard] }
+]
+
+router à définir dans module:
+@NgModule({
+	imports     : [
+RouterModule.forRoot(appRoutes)
+]
+})
+
+[implementation specifique]
+router peut etre defini pour chaque composant dans un module:
+const routes = [
+    { path : 'sample', component : FuseSampleComponent, canActivate: [AuthGuard] }
+];
+
+@NgModule({
+imports     : [
+	RouterModule.forChild(routes)
+]
+})
+
+[implementation HTML]
+--> router se fait au niveau de:
+<router-outlet></router-outlet>
+
+-->acceder a une url
+[routerLink]="'/pages/auth/register'"
+
+-->mettre css specifique quand lien actif (sur menu)
+<li routerLinkActive="active">
+	<a [routerLink]="['/test']">test</a>
+</li>
+
+[implementation TS]
+constructor (private route: ActivatedRoute){}
+
+ngOnInit() {
+	this.route.paramMap
+		.subscribe(params => {
+			lest id = +params.get('id')   // le plus converti le string en nombre, le id provient du 					    // parametre defini dans le path de la route 
+			console.log(params);
+		});
+}
+}
+
+
+[naviguer ailleurs sans decharger le composant actuel] A VERIFIER
+==> dans HTML , button de navigation:
+<button [routerLink]="['/followers',1234]" class="btn btn-primary"> Next </button>
+
+[queryParams: ajouter des parametres non obligatoire dans la route]
+==> dans le HTML:
+<a routerLink="/followers"
+	[queryParams] = "{ page: 1, order: 'asc'}">go</a>
+
+==> dans le composant
+this.route.queryParamMap.subscribe();
+
+[programmatic navigation]
+constructor(
+        private authService: AuthService,
+        private notificationService: NotificationsService,
+        private router: Router
+    ) { }
+ 
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (this.authService.loggedIn()) {
+            // logged in so return true
+            return true;
+        }
+ 
+        // not logged in so redirect to login page with the return url
+        //this.notificationService.error('Login required','You must be logged in to access this area');
+        this.router.navigate(['/pages/auth/login'], { queryParams: { returnUrl: state.url }});
+        return false;
+    }
+
+
+
+
+
+

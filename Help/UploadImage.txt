@@ -1,0 +1,37 @@
+[Cloudinary]
+--> dans Angular, parametrer appsettings.json:
+"CloudinarySettings": {
+      "CloudName":"",
+      "ApiKey":"",
+      "ApiSecret":""
+    }
+
+--> dans .net, dossier Helper:
+ajouter un fichier: CloudinarySettings et mettre:
+public class CloudinarySettings
+    {
+        public string CloudName { get; set; }
+        public string ApiKey { get; set; }
+        public string ApiSecret { get; set; }
+    }
+
+- dans .net StartUp.cs , proc ConfiguresServices, ajouter :
+- dans .net , ajouter au model ayant la photo un public id:
+	public string IdAvatarCloud { get; set; }
+
+-dans le controlleur, injecter le settings dans le constructor: IOptions<CloudinarySettings> cloudinaryConfig
+-dans le controlleur, ajouter le account de cloudinary
+ex:
+public UserController(IUserService userService, IMapper mapper,IOptions<CloudinarySettings> cloudinaryConfig)
+        {
+            _mapper = mapper;
+            _userService = userService;
+	    _cloudinaryConfig = cloudinaryConfig;
+
+	    Account acc = new Account(
+                _cloudinaryConfig.Value.CloudName,
+                _cloudinaryConfig.Value.ApiKey,
+                _cloudinaryConfig.Value.ApiSecret);
+	    
+	    _cloudinary = new Cloudinary(acc);
+        }

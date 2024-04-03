@@ -1,0 +1,3 @@
+
+//executer un fichier script en ligne de commande
+sqlcmd -S SQLDEVGD -i "C:\Projects\Filow_ORI\_SQL\"

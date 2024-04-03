@@ -1,0 +1,413 @@
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+    [formGroup]="_asifDetailService.form.formGroup"
+    ngxsForm="asifDetail"
+    *ngIf="_asifDetailService.formIsLoaded as loaded else tp_progress">
+
+    <!-- HEADER -->
+    <asif-detail-header> </asif-detail-header>
+
+    <!-- CONTENT -->
+    <mat-tab-group
+        class="flex-auto -mt-5 p-6 sm:p-10 rounded-t-2xl shadow bg-card"
+        fuseScrollbar
+        [fuseScrollbarOptions]="{wheelPropagation: true, suppressScrollX: true}">
+
+        <!-- DETAIL -->
+        <mat-tab label="Détail">
+            <ng-template matTabContent>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-3"><ng-container *ngTemplateOutlet="tp_label_as"></ng-container></div>
+
+                    <div><ng-container *ngTemplateOutlet="tp_date_integration"></ng-container></div>
+                    <div class="col-span-2"></div>
+                    <div><ng-container *ngTemplateOutlet="tp_amount_operation"></ng-container></div>
+                    <div class="col-span-2"></div>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Classification -->
+        <mat-tab label="Classification">
+            <ng-template matTabContent>
+                <div class="grid grid-cols-4 gap-2">
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_method"></ng-container></div>
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_place"></ng-container></div>
+
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_type_family"></ng-container></div>
+                    <div class="col-span-2"></div>
+
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_type_loader"></ng-container></div>
+                    <div class="col-span-2"></div>
+
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_loader"></ng-container></div>
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_operation_transverse"></ng-container></div>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Mots clefs -->
+        <mat-tab label="Mots clefs">
+            <ng-template matTabContent>
+                <div class="pb-10">
+                    <mat-card>
+                        <mat-card-header>
+                            <div mat-card-avatar><mat-icon>feedback</mat-icon></div>
+                            <mat-card-title>Les mots clefs permettent de retrouver les informations dans le libellé d'opérations.</mat-card-title>
+                            <mat-card-subtitle>Un mot clef ne doit pas comporter d'espace, ni de caractères spéciaux (-/*)</mat-card-subtitle>
+                        </mat-card-header>
+                    </mat-card>
+                </div>
+
+                <div class="grid grid-cols-1">
+                    <ng-container *ngTemplateOutlet="tp_operation_keyword_temp"></ng-container>
+                    <ng-container *ngTemplateOutlet="tp_place_keyword_temp"></ng-container>
+
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Géolocalisation -->
+        <mat-tab label="Géolocalisation" *ngIf="getValue(property.operationDetail.operationPlace)?.id===enumOperationPlace.geo">
+            <ng-template matTabContent>
+                <div class="grid grid-cols-2">
+                    <div class="col-span-2">
+                        <g-map-search  [gMapAddressFilterData]="getGMapAddressFilterData()" (changeGMapAddress)="onChangeGMapAddress($event)"></g-map-search>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+<!-- ============================================================================== -->
+<!-- ===========================       TEMPLATE        ============================ -->
+<!-- ============================================================================== -->
+
+<!-- ===========================       operation_label        ============================ -->
+<ng-template #tp_label_as>
+    <mat-form-field class="w-full">
+        <mat-label>Libellé opération</mat-label>
+        <input
+            matInput
+            [attr.data-cy]="property.labelAs"
+            [formControlName]="property.labelAs">
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       operation_place        ============================ -->
+<ng-template #tp_operation_place >
+    <mat-error *ngIf="getControl(property.operationDetail.operationPlace).errors">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+    <ng-container *ngIf="getValue(property.operationDetail.operationPlace)?.id!==enumOperationPlace.na">
+        <div class="pb-2">Lieu de la transaction</div>
+        <mat-chip-list >
+            <mat-chip
+                *ngFor="let place of (_asifDetailService.stateFilter$ | async)?.datas?.operationPlace"
+                class="cursor-pointer"
+                (click)="onOperationPlaceClick(place)"
+                [color]="getValue(property.operationDetail.operationPlace)?.id===place.id ? 'primary' : 'accent'" selected>
+                {{place.label }}
+            </mat-chip>
+        </mat-chip-list>
+    </ng-container>
+</ng-template>
+
+<!-- ===========================       date_integration        ============================ -->
+<ng-template #tp_date_integration>
+    <mat-form-field class="w-full">
+        <mat-label>Date intégration</mat-label>
+        <input matInput [matDatepicker]="dateIntegrationPicker" [formControlName]="property.dateIntegration">
+        <mat-datepicker-toggle matSuffix [for]="dateIntegrationPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateIntegrationPicker></mat-datepicker>
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       amount_operation        ============================ -->
+<ng-template #tp_amount_operation>
+    <mat-form-field class="w-full">
+        <mat-label>Montant</mat-label>
+        <input
+            matInput
+            [attr.data-cy]="property.amountOperation"
+            [formControlName]="property.amountOperation">
+            <span matPrefix >€&nbsp;</span>
+        <mat-icon *ngIf="getValue(property.amountOperation)>0" matSuffix  class="green-fg mr-2">trending_up</mat-icon>
+        <mat-icon *ngIf="getValue(property.amountOperation)<0" matSuffix  class="red-fg mr-2">trending_down</mat-icon>
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       operation_method        ============================ -->
+<ng-template #tp_operation_method>
+    <mat-error *ngIf="getControl(property.operationMethod).errors">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+    <mat-form-field class="w-full" >
+        <mat-label>Méthodes d'opération</mat-label>
+        <mat-select
+            [attr.data-cy]="property.operationMethod"
+            [formControlName]="property.operationMethod"
+            [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operationMethod  " [value]="item">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       operation_type_family        ============================ -->
+<ng-template #tp_operation_type_family>
+    <mat-error *ngIf="getControl(property.operationTypeFamily).errors">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+    <mat-form-field class="w-full" >
+        <mat-label>Catégories d'opération</mat-label>
+        <mat-select
+            [attr.data-cy]="property.operationTypeFamily"
+            [formControlName]="property.operationTypeFamily"
+            [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operationTypeFamily  " [value]="item">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       operation_type        ============================ -->
+<ng-template #tp_operation_type_loader>
+    <ng-container *ngIf="(_asifDetailService.stateFilter$ | async).loader['ot-list']?.loading then tp_select_loader else tp_operation_type"></ng-container>
+</ng-template>
+
+<ng-template #tp_operation_type>
+    <mat-error *ngIf="getControl(property.operationType).errors">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+    <mat-form-field class="w-full" >
+        <mat-label>Types d'opération</mat-label>
+        <mat-select
+            [attr.data-cy]="property.operationType"
+            [formControlName]="property.operationType"
+            [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operationType" [value]="item">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</ng-template>
+
+<!-- ===========================       operation        ============================ -->
+<ng-template #tp_operation_loader>
+    <ng-container *ngIf="(_asifDetailService.stateFilter$ | async).loader['operation-list']?.loading then tp_select_loader else tp_operation"></ng-container>
+</ng-template>
+
+<ng-template #tp_operation>
+    <div *ngIf="!_asifDetailService.isNewOperationTemplate">
+        <ng-container *ngIf="(_asifDetailService.stateFilter$ | async).loader['operation']?.loading then tp_select_saver else tp_operation_edit"></ng-container>
+    </div>
+    <div *ngIf="_asifDetailService.isNewOperationTemplate" >
+        <ng-container *ngTemplateOutlet="tp_operation_add"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #tp_operation_edit>
+    <div class="grid grid-cols-3 gap-2">
+        <mat-error class="col-span-2" *ngIf="getControl(property.operation).errors">
+            <p>La sélection ne doit pas être vide</p>
+        </mat-error>
+
+        <mat-form-field class="col-span-2 w-full">
+            <mat-label>Opérations</mat-label>
+            <mat-select
+                [attr.data-cy]="property.operation"
+                [formControlName]="property.operation"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operation" [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="flex items-center justify-start">
+            <button
+                mat-mini-fab type="button"
+                (click)="_asifDetailService.isNewOperationTemplate=!_asifDetailService.isNewOperationTemplate"
+                matTooltip="ajouter opération">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #tp_operation_add>
+    <div class="grid grid-cols-3 gap-2">
+        <mat-error class="col-span-2" *ngIf="getControl(property.operationLabelTemp).errors && getControl(property.operationLabelTemp).hasError('isUnknown')">
+            <p>L'opération doit contenir un libellé</p>
+        </mat-error>
+
+        <mat-form-field class="col-span-2 w-full">
+            <mat-label>Proposition d'opération</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.operationLabelTemp"
+                [formControlName]="property.operationLabelTemp">
+        </mat-form-field>
+
+        <div class="grid grid-cols-2 content-center ">
+            <button
+                mat-raised-button
+                [disabled]="getControl(property.operationLabelTemp).errors"
+                (click)="addOperation(getValue(property.operationLabelTemp))">
+                <span>VALIDER</span>
+            </button>
+
+            <button class="justify-self-end" mat-mini-fab type="button" (click)="_asifDetailService.isNewOperationTemplate=!_asifDetailService.isNewOperationTemplate">
+                <mat-icon style="color:white">keyboard_return</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- ===========================       operation_transverse        ============================ -->
+<ng-template #tp_operation_transverse>
+    <div *ngIf="!_asifDetailService.isNewOperationTransverseTemplate">
+        <ng-container *ngIf="(_asifDetailService.stateFilter$ | async).loader['operation-transverse']?.loading then tp_select_saver else tp_operation_transverse_edit"></ng-container>
+    </div>
+    <div *ngIf="_asifDetailService.isNewOperationTransverseTemplate" >
+        <ng-container *ngTemplateOutlet="tp_operation_transverse_add"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #tp_operation_transverse_edit>
+    <div class="grid grid-cols-3 gap-2">
+        <mat-form-field class="col-span-2 w-full">
+            <mat-label>Opérations transverse</mat-label>
+            <mat-select
+                multiple
+                [attr.data-cy]="property.operationTransverse"
+                [formControlName]="property.operationTransverse"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operationTransverse" [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="flex items-center justify-start">
+            <button
+                mat-mini-fab
+                type="button"
+                (click)="_asifDetailService.isNewOperationTransverseTemplate=!_asifDetailService.isNewOperationTransverseTemplate">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #tp_operation_transverse_add>
+    <div class="grid grid-cols-3 gap-2">
+        <mat-error class="col-span-2" *ngIf="getControl(property.operationTransverse).errors">
+            <p>L'opération transverse doit contenir un libellé</p>
+        </mat-error>
+
+        <mat-form-field class="col-span-2 w-full">
+            <mat-label>Opération transverse</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.operationTransverseLabelTemp"
+                [formControlName]="property.operationTransverseLabelTemp">
+        </mat-form-field>
+
+        <div class="grid grid-cols-2 content-center">
+            <button
+                mat-raised-button
+                [disabled]="getControl(property.operationTransverse).errors" (click)="addOperationTransverse(getValue(property.operationTransverseLabelTemp))">
+                <span>VALIDER</span>
+            </button>
+
+            <button
+                mat-mini-fab
+                class="justify-self-end"
+                type="button"
+                (click)="_asifDetailService.isNewOperationTransverseTemplate=!_asifDetailService.isNewOperationTransverseTemplate">
+                <mat-icon style="color:white">keyboard_return</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- ===========================       operation_keyword_temp        ============================ -->
+<ng-template #tp_operation_keyword_temp>
+    <ng-container formGroupName="operationDetail">
+        <mat-form-field class="w-full">
+            <mat-label>Mot clef pour recherche de l'opération</mat-label>
+            <input matInput
+                [attr.data-cy]="getProperty(property.operationDetail.keywordOperation)"
+                [formControlName]="getProperty(property.operationDetail.keywordOperation)">
+        </mat-form-field>
+    </ng-container>
+</ng-template>
+
+<!-- ===========================       place_keyword_temp        ============================ -->
+<ng-template #tp_place_keyword_temp>
+    <div class="w-100-p" fxLayout="row" *ngIf="getValue(property.operationDetail.operationPlace)?.id===enumOperationPlace.geo" >
+        <ng-container formGroupName="operationDetail">
+            <mat-form-field class="w-full">
+                <mat-label>Mot clef pour recherche du lieu d'opération</mat-label>
+                <input matInput
+                [attr.data-cy]="getProperty(property.operationDetail.keywordPlace)"
+                [formControlName]="getProperty(property.operationDetail.keywordPlace)">
+            </mat-form-field>
+        </ng-container>
+    </div>
+    <mat-error *ngIf="getControl(property.operationDetail.keywordPlace).errors">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+</ng-template>
+
+<!-- SELECT LOADER -->
+<ng-template #tp_select_saver>
+    <mat-form-field class="w-full">
+        <mat-label></mat-label>
+        <input disabled matInput value="enregistrement...">
+        <span matSuffix>
+          <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+        </span>
+    </mat-form-field>
+</ng-template>
+
+<ng-template #tp_select_loader>
+    <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label></mat-label>
+        <input disabled matInput>
+        <span matSuffix>
+          <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+        </span>
+    </mat-form-field>
+  </ng-template>
+
+
+<!-- <ng-template #tp_operation_place>
+    <mat-form-field class="w-full">
+        <mat-label>Lieu opération</mat-label>
+        <mat-select
+            [attr.data-cy]="property.operationPlace"
+            [formControlName]="property.operationPlace"
+            [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of (_asifDetailService.stateFilter$ | async).datas.operationPlace" [value]="item">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-error *ngIf="getControl(property.operationPlace).errors && getControl(property.operationPlace).hasError('isUnknown')">
+        <p>La sélection ne doit pas être vide</p>
+    </mat-error>
+</ng-template> -->
+</div>
+
+<ng-template #tp_progress>
+<mat-progress-bar
+    color="primary"
+    mode="indeterminate">
+</mat-progress-bar>
+</ng-template>

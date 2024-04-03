@@ -1,0 +1,59 @@
+
+<ng-container
+    ngxsForm="userDetail"
+    [formGroup]="_profileService.form.formGroup"
+    *ngIf="_profileService.form">
+
+    <fuse-card
+        class="flex flex-col"
+        [flippable]="true"
+        #fuseCard>
+        <ng-container fuseCardFront>
+            <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-4">
+
+                <div class="flex flex-col">
+                    <span class="font-semibold leading-none text-primary">A propos de moi</span>
+                    <span class="text-sm text-secondary leading-none mt-1"></span>
+                </div>
+                <!-- (_profileService.state$ | async)?.loader['user-detail-save']?.loading -->
+                <button
+                    *ngIf="!(_profileService.state$ | async)?.loader['user-detail-save']?.loading"
+                    class="ml-auto -mr-4"
+                    mat-icon-button
+                    matTooltip="Edition"
+                    (click)="fuseCard.face = 'back'">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_outline:pencil'">
+                    </mat-icon>
+                </button>
+            </div>
+
+            <profile-about-me-read></profile-about-me-read>
+
+        </ng-container>
+
+        <ng-container fuseCardBack>
+            <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-4">
+                <div class="flex flex-col">
+                    <span class="font-semibold leading-none text-primary">A propos de moi</span>
+                    <span class="text-sm text-secondary leading-none mt-1">Edition</span>
+                </div>
+                <button
+                    class="ml-auto -mr-4"
+                    mat-icon-button
+                    (click)="fuseCard.face = 'front'"
+                >
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_outline:arrow-left'"></mat-icon>
+                </button>
+            </div>
+
+            <profile-about-me-edit></profile-about-me-edit>
+
+        </ng-container>
+    </fuse-card>
+
+
+</ng-container>

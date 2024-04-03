@@ -1,0 +1,14 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" >
+    <header>
+        <as-tab-header></as-tab-header>
+    </header>
+    <content fuseScrollbar class="flex-1">
+        <as-table *ngIf="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.list"></as-table>
+        <as-chart-evolution *ngIf="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.chartEvolution"></as-chart-evolution>
+        <as-internal-transfert *ngIf="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.internalTransfer"></as-internal-transfert>
+    </content>
+    <footer *ngIf="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.list">
+        <as-table-footer></as-table-footer>
+    </footer>
+</div>
+

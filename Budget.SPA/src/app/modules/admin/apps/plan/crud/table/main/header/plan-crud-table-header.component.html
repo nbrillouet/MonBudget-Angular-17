@@ -1,0 +1,56 @@
+<div
+    class="px-2 dark"
+    [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference?.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;">
+
+    <div class="grid grid-cols-4 gap-2 py-2 justify-items-strech">
+        <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">
+            Budget
+        </div>
+    </div>
+
+    <div class="flex justify-between">
+        <div class="flex flex-row"></div>
+
+        <div class="flex flex-row">
+            <div class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover bg-primary">
+                <div class="text-sm leading-6 truncate">{{ _planCrudTableService.filterSelected?.year }}</div>
+            </div>
+            <div class="ml-px rounded-tr-xl bg-hover bg-gray-700">
+                <button
+                    [matMenuTriggerFor]="projectsMenu"
+                    mat-icon-button>
+                    <mat-icon [svgIcon]="'heroicons_outline:dots-horizontal'"></mat-icon>
+                </button>
+                <mat-menu #projectsMenu="matMenu">
+                    <button
+                        mat-menu-item
+                        *ngFor="let year of _planCrudTableService?.filterSelection?.year"
+                        (click)="changeYear(year)">
+                        <span>{{year}}</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

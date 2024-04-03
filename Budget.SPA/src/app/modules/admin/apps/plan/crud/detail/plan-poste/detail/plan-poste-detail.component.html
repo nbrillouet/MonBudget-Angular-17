@@ -1,0 +1,295 @@
+<form
+    class="mat-typography -m-6 overflow-x-hidden overflow-y-hidden"
+    [formGroup]="_planPosteForDetailService.form.formGroup"
+    ngxsForm="planPosteDetail"
+    *ngIf="_planPosteForDetailService.formIsLoaded as loaded"
+>
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">{{ getValue(_planPosteForDetailService, property?.poste)?.label }}: {{ getValue(_planPosteForDetailService, property?.label) }}</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <mat-dialog-content>
+        <!-- <mat-tab-group class="p-5">
+            <mat-tab label="Informations générales" >
+                <div class="pt-5 w-fit grid grid-cols-2">
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div>
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_reference"></ng-container></div>
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPostReference"></ng-container></div>
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPosteUser"></ng-container></div>
+                </div>
+            </mat-tab>
+            <mat-tab label="montants" >
+                <div><ng-container *ngTemplateOutlet="tp_chart"></ng-container>TOTO</div>
+            </mat-tab>
+        </mat-tab-group> -->
+        <div class="w-fit grid grid-cols-2 p-5">
+            <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div>
+            <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_reference"></ng-container></div>
+            <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPostReference"></ng-container></div>
+            <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPosteUser"></ng-container></div>
+            <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_estimation"></ng-container></div>
+            <!-- <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_chart"></ng-container></div> -->
+            <!-- <div><ng-container *ngTemplateOutlet="tp_currentAmount"></ng-container></div> -->
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="h-16 mr-2 mb-1" align="end">
+        <ng-container *ngTemplateOutlet="tp_action"></ng-container>
+
+        <!-- <ng-container *ngIf="_planPosteForDetailService.saveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action_in_progress"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="!_planPosteForDetailService.saveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action"></ng-container>
+        </ng-container> -->
+    </mat-dialog-actions>
+
+
+    <!-- ============================================================================== -->
+    <!-- ===========================       TEMPLATE        ============================ -->
+    <!-- ============================================================================== -->
+
+    <!-- __________________________________ DETAIL ____________________________________ -->
+
+    <!-- ===========================       label        ============================ -->
+    <ng-template #tp_label>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Libellé</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.label"
+                [formControlName]="property.label">
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       reference        ============================ -->
+    <ng-template #tp_reference>
+        <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Référence</mat-label>
+            <mat-select
+                placeholder="Référence"
+                [formControlName]="property.referenceTable"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_planPosteForDetailService.stateFilter$ | async).datas?.referenceTable" [value]="item" >
+                {{item.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       planPostReference        ============================ -->
+    <ng-template #tp_planPostReference>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex flex-row">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Choix Référence</div>
+            </legend>
+
+            <div class="flex items-center">
+                <mat-form-field appearance="legacy" class="w-2/6">
+                    <!-- <mat-label>Choix Référence</mat-label> -->
+                    <mat-select
+                        [compareWith]="compareObjects"
+                        [formControlName]="property.planPosteReference"
+                        multiple>
+
+                        <mat-optgroup *ngFor="let group of (_planPosteForDetailService.stateFilter$ | async).datas?.planPosteReference" [label]="group.label">
+                        <mat-option *ngFor="let item of group.selects" [value]="item" [compareWith]="compareObjects">
+                            {{ item.label }}
+                        </mat-option>
+                        </mat-optgroup>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="pl-5 w-4/6">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let group of getValue(_planPosteForDetailService, property?.planPosteReference)"
+                            [selectable]="false"
+                            [removable]="false" >
+                                {{group.label}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+
+            </div>
+
+        </fieldset>
+    </ng-template>
+
+
+    <!-- ===========================       planPosteUser        ============================ -->
+    <ng-template #tp_planPosteUser>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex flex-row">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Part par participant</div>
+            </legend>
+
+            <div class="flex items-center" *ngFor="let planPosteUser of getValue(_planPosteForDetailService, property?.planPosteUser)">
+                <div class="w-2/6"> {{ planPosteUser.user.firstName }}  {{ planPosteUser.user.lastName }}  </div>
+                <div class="w-3/6">
+                    <mat-slider
+                        class="w-full"
+                        thumbLabel
+                        (change)="changeUserPercentage($event,planPosteUser)"
+                        [value]="planPosteUser.percentagePart"
+                        tickInterval="1"
+                        min="0"
+                        max="100">
+                    </mat-slider>
+                </div>
+                <div class="w-1/6 text-right">{{ planPosteUser.percentagePart }} %</div>
+            </div>
+        </fieldset>
+    </ng-template>
+
+    <!-- ===========================       estimation        ============================ -->
+    <ng-template #tp_estimation>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex w-full">
+                <div><mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                </div>
+                <div class="flex-1">
+                    <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Montants prévisionnels</div>
+                </div>
+                <div class="ml-auto">
+                    <ng-container [formGroupName]="getProperty(_planPosteForDetailService, property.planPosteFrequencies)">
+                        <mat-slide-toggle
+                            [formControlName]="getProperty(_planPosteForDetailService, property?.planPosteFrequencies?.isYearly)">
+                            {{ getValue(_planPosteForDetailService, property.planPosteFrequencies)?.isYearly ? 'Estimation annuelle' : 'Estimation mensuelle' }}
+                        </mat-slide-toggle>
+                    </ng-container>
+                </div>
+            </legend>
+
+            <ng-container [ngSwitch]="getValue(_planPosteForDetailService, property?.planPosteFrequencies)?.isYearly">
+                <ng-container *ngSwitchCase="true">
+                    <ng-container *ngTemplateOutlet="tp_year_estimation"></ng-container>
+                </ng-container>
+                <ng-container *ngSwitchCase="false">
+                    <ng-container *ngTemplateOutlet="tp_month_estimation"></ng-container>
+                </ng-container>
+            </ng-container>
+        </fieldset>
+    </ng-template>
+
+
+    <ng-template #tp_month_estimation>
+        <div class="flex items-center">
+            <div class="w-3/6">
+                <widget-card-simple-chart-bar
+                    [baseChartBar]="_planPosteForDetailService.getBaseChartBar()"
+                    (getCurrentMonthInfo)="getChartInfo($event)" >
+                </widget-card-simple-chart-bar>
+            </div>
+
+            <div class="pl-5 w-3/6" *ngIf="chartInfo">
+
+                <div class="grid grid-cols-2">
+                    <div class="col-span-2">
+                        <mat-form-field appearance="outline" floatLabel="always" >
+                            <mat-label>montant</mat-label>
+                            <input
+                                [placeholder]="'montant' + chartInfo?.y"
+                                matInput
+                                [attr.data-cy]="property.currentAmount"
+                                [formControlName]="property.currentAmount">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button
+                            mat-mini-fab
+                            [color]="'primary'"
+                            (click)='changeAmountMonthly("once")'
+                            matTooltip="appliquer sur le mois">
+                            <mat-icon svgIcon="done"></mat-icon>
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            mat-mini-fab
+                            [color]="'primary'"
+                            (click)='changeAmountMonthly("all")'
+                            matTooltip="appliquer sur tous les mois">
+                            <mat-icon svgIcon="done_all"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #tp_year_estimation>
+        <div class="flex items-center">
+            <div class="w-2/6">
+                <mat-form-field appearance="outline" floatLabel="always" >
+                    <mat-label>montant annuel</mat-label>
+                    <input
+                        [placeholder]="'montant annuel'"
+                        matInput
+                        [attr.data-cy]="property.currentAmount"
+                        [formControlName]="property.currentAmount">
+                </mat-form-field>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- <ng-template #tp_action_in_progress>
+        <button
+            mat-flat-button
+            [color]="'warn'">
+            <span class="flex justify-between ml-2 mr-1">
+                Enregistrement en cours...
+                <span matSuffix>
+                    <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+                  </span>
+            </span>
+        </button>
+    </ng-template> -->
+
+    <ng-template #tp_action>
+        <ng-container *ngIf="!_planPosteForDetailService.saveInProgress
+            then tp_button_save
+            else tp_button_save_in_progress">
+        </ng-container>
+    </ng-template>
+
+    <ng-template #tp_button_save>
+        <button
+            mat-flat-button
+            [color]="'primary'"
+            [disabled]="!_planPosteForDetailService.form.formGroup.valid || !_planPosteForDetailService.form.formGroup.dirty"
+            (click)='_planPosteForDetailService.save()'>
+            <span class="ml-2 mr-1">Enregistrer</span>
+        </button>
+    </ng-template>
+
+    <!-- SAVE IN PROGRESS -->
+    <ng-template #tp_button_save_in_progress>
+        <button
+            mat-flat-button
+            [color]="'warn'">
+            <span class="flex justify-between ml-2 mr-1">
+                Enregistrement...
+                <span matSuffix>
+                    <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+                  </span>
+            </span>
+        </button>
+    </ng-template>
+</form>

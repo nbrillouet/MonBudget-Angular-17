@@ -1,0 +1,34 @@
+https:maps.googleapis.com/maps/api/geocode/xml?address=paris,+CA&key=AIzaSyD6F176dnusdXdDH35db9iOGGlCiZYNDvw
+
+address_component
+type: 
+
+postal_code
+political
+country							pays
+administrative_area_level_1		region
+administrative_area_level_2 	departement
+locality						ville
+route 							lieu dit / route
+street_number					num rue
+
+sublocality_level_2				sous district
+sublocality_level_1				district / arrondissement
+
+neighborhood					quartier
+postal_code_suffix				
+
+result:
+type:
+point_of_interest
+establishment
+food 
+hair_care
+grocery_or_supermarket
+meal_takeaway 
+store
+restaurant
+bar
+cafe
+
+

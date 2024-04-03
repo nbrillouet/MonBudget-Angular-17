@@ -1,0 +1,272 @@
+<div
+    class="flex flex-col flex-auto md:w-160 md:min-w-160 max-h-160 -m-6 overflow-y-auto"
+    *ngIf="_planPosteForDetailService.formIsLoaded as loaded else tp_progress"
+>
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">{{ getValue(_planPosteForDetailService, property?.poste)?.label }}: {{ getValue(_planPosteForDetailService, property?.label) }}</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Card form -->
+    <form
+        class="flex flex-col flex-0 items-start w-full p-6 sm:p-8 space-y-6 overflow-y-auto"
+        [formGroup]="_planPosteForDetailService.form.formGroup"
+        ngxsForm="planPosteDetail"
+        *ngIf="_planPosteForDetailService.formIsLoaded as loaded"
+    >
+            <div class="grid grid-cols-3 gap-2 pt-10">
+                <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div>
+                <div></div>
+                <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_reference"></ng-container></div>
+                <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPostReference"></ng-container></div>
+                <div><ng-container *ngTemplateOutlet="tp_chiplistPlanPostReference"></ng-container></div>
+                <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_planPosteUser"></ng-container></div>
+                <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_chart"></ng-container></div>
+                <div><ng-container *ngTemplateOutlet="tp_currentAmount"></ng-container></div>
+
+                <!-- <div> {{ getValue(_planPosteForDetailService, property.label ) }}               </div>           <div class="col-span-2"></div> -->
+                <!--<div>                   <ng-container *ngTemplateOutlet="tp_account_type"></ng-container></div>     <div class="col-span-2"></div>
+                <div>                   <ng-container *ngTemplateOutlet="tp_start_amount"></ng-container></div>     <div class="col-span-2"></div>
+                <div>                   <ng-container *ngTemplateOutlet="tp_alert_threshold"></ng-container></div>  <div class="col-span-2"></div> -->
+            </div>
+
+
+        <!-- Title -->
+        <!-- <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+            <mat-label>Title</mat-label>
+            <textarea
+                matInput
+                [formControlName]="'title'"
+                [rows]="1"
+                cdkTextareaAutosize
+                [cdkAutosizeMinRows]="1">
+            </textarea>
+        </mat-form-field> -->
+
+        <!-- Description -->
+        <!-- <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+            <mat-label>Description</mat-label>
+            <textarea
+                matInput
+                [formControlName]="'description'"
+                [rows]="1"
+                cdkTextareaAutosize
+                [cdkAutosizeMinRows]="1">
+            </textarea>
+        </mat-form-field> -->
+
+        <!-- Due date -->
+        <div>
+            <div class="font-medium">Due date</div>
+            <div>
+            <!-- <div
+                class="relative flex items-center mt-1.5 px-4 leading-9 rounded-full cursor-pointer"
+                [ngClass]="{'text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700': !card.dueDate,
+                                'text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500': card.dueDate && !isOverdue(card.dueDate),
+                                'text-red-800 bg-red-200 dark:text-red-100 dark:bg-red-500': card.dueDate && isOverdue(card.dueDate)}"
+                (click)="dueDatePicker.open()"> -->
+                <mat-icon
+                    class="icon-size-5 text-current"
+                    [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                <!-- <span class="ml-2 text-md font-medium">
+                    <ng-container *ngIf="card.dueDate">{{card.dueDate | date:'longDate'}}</ng-container>
+                    <ng-container *ngIf="!card.dueDate">Not set</ng-container>
+                </span> -->
+                <!-- <mat-form-field class="fuse-mat-no-subscript fuse-mat-dense invisible absolute inset-0 -mt-2.5 opacity-0 pointer-events-none">
+                    <input
+                        matInput
+                        [formControlName]="'dueDate'"
+                        [matDatepicker]="dueDatePicker">
+                    <mat-datepicker #dueDatePicker>
+                        <mat-datepicker-actions>
+                            <button
+                                mat-button
+                                (click)="cardForm.get('dueDate').setValue(null)"
+                                matDatepickerCancel>
+                                Clear
+                            </button>
+                            <button
+                                mat-flat-button
+                                [color]="'primary'"
+                                matDatepickerApply>
+                                Select
+                            </button>
+                        </mat-datepicker-actions>
+                    </mat-datepicker>
+                </mat-form-field> -->
+            </div>
+        </div>
+
+        <!-- Labels -->
+        <div class="w-full">
+            <div class="font-medium">Labels</div>
+            <div class="mt-1 rounded-md border border-gray-300 shadow-sm overflow-hidden">
+                <!-- Header -->
+                <div class="flex items-center my-2 mx-3">
+                    <div class="flex items-center flex-auto min-w-0">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                        <!-- <input
+                            class="min-w-0 ml-2 py-1 border-0"
+                            type="text"
+                            placeholder="Enter label name"
+                            (input)="filterLabels($event)"
+                            (keydown)="filterLabelsInputKeyDown($event)"
+                            [maxLength]="50"> -->
+                    </div>
+                </div>
+                <!-- Available labels -->
+                <div class="max-h-40 leading-none overflow-y-auto border-t">
+                    <!-- Labels -->
+                    <!-- <ng-container *ngFor="let label of filteredLabels; trackBy: trackByFn">
+                        <mat-checkbox
+                            class="flex items-center h-10 min-h-10 px-4"
+                            [color]="'primary'"
+                            [checked]="hasLabel(label)"
+                            (change)="toggleProductTag(label, $event)">
+                            {{label.title}}
+                        </mat-checkbox>
+                    </ng-container> -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ============================================================================== -->
+        <!-- ===========================       TEMPLATE        ============================ -->
+        <!-- ============================================================================== -->
+
+        <!-- __________________________________ DETAIL ____________________________________ -->
+
+        <!-- ===========================       label        ============================ -->
+        <ng-template #tp_label>
+            <mat-form-field class="w-full">
+                <mat-label>Libellé</mat-label>
+                <input
+                    matInput
+                    [attr.data-cy]="property.label"
+                    [formControlName]="property.label">
+            </mat-form-field>
+        </ng-template>
+
+        <!-- ===========================       reference        ============================ -->
+        <ng-template #tp_reference>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Référence</mat-label>
+                <mat-select placeholder="Référence"
+                    [formControlName]="property.referenceTable"
+                    [compareWith]="compareObjects">
+                    <mat-option *ngFor="let item of (_planPosteForDetailService.stateFilter$ | async).datas?.referenceTable" [value]="item" >
+                    {{item.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+
+        <ng-template #tp_planPostReference>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-35-p">
+                <mat-label>Choix Référence</mat-label>
+                <mat-select
+                    [compareWith]="compareObjects"
+                    [formControlName]="property.planPosteReference"
+                    placeholder="Choix Référence"
+                    multiple
+                    >
+
+                    <mat-optgroup *ngFor="let group of (_planPosteForDetailService.stateFilter$ | async).datas?.planPosteReference" [label]="group.label">
+                    <mat-option *ngFor="let item of group.selects" [value]="item">
+                        {{ item.label }}
+                    </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+
+        <ng-template #tp_chiplistPlanPostReference>
+            <div>
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let group of getValue(_planPosteForDetailService, property?.planPosteReference)"
+                        [selectable]="false"
+                        [removable]="false" >
+                            {{group.label}}
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </ng-template>
+
+        <ng-template #tp_planPosteUser>
+            <div fxLayout="column" *ngFor="let planPosteUser of getValue(_planPosteForDetailService, property?.planPosteUser)">
+                <div fxLayout >
+                    <div fxFlex="30%">
+                        {{ planPosteUser.user.firstName }}  {{ planPosteUser.user.lastName }} {{ planPosteUser.percentagePart }} %
+                    </div>
+                    <mat-slider  fxFlex
+                        thumbLabel
+                        (input)="onInputChange($event,planPosteUser)"
+                        [value]="planPosteUser.percentagePart"
+                        tickInterval="1"
+                        min="0"
+                        max="100">
+                    </mat-slider>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #tp_chart>
+            <widget-card-simple-chart-bar [baseChartBar]="_planPosteForDetailService.getBaseChartBar()" (getCurrentMonthInfo)="getChartInfo($event)" ></widget-card-simple-chart-bar>
+        </ng-template>
+
+        <ng-template #tp_currentAmount >
+            <div *ngIf="chartInfo">
+                <div class="grid grid-cols-2">
+                    <div class="col-span-2">
+                        <mat-form-field appearance="outline" floatLabel="always" >
+                            <mat-label>montant</mat-label>
+                            <input
+                                [placeholder]="'montant' + chartInfo?.y"
+                                matInput
+                                [attr.data-cy]="property.currentAmount"
+                                [formControlName]="property.currentAmount">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button
+                            mat-mini-fab
+                            [color]="'primary'"
+                            (click)='validateAmount("once")'
+                            matTooltip="appliquer sur le mois">
+                            <mat-icon svgIcon="done"></mat-icon>
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            mat-mini-fab
+                            [color]="'primary'"
+                            (click)='validateAmount("all")'
+                            matTooltip="appliquer sur tous les mois">
+                            <mat-icon svgIcon="done_all"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+    </form>
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

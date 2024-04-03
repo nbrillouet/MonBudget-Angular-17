@@ -1,0 +1,294 @@
+<div class="flex flex-col flex-auto w-full">
+
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+
+        <!-- Title and action buttons -->
+        <div class="flex items-center justify-between w-full">
+            <div>
+                <h2 class="text-3xl font-semibold tracking-tight leading-8">Suivi des budgets</h2>
+                <div class="font-medium tracking-tight text-secondary">Garder vos budgets en equilibre</div>
+            </div>
+            <div class="flex items-center ml-6">
+
+                <div class="ml-2">
+                    <button
+                        class="hidden sm:inline-flex"
+                        mat-stroked-button
+                        [matMenuTriggerFor]="yearMenu">
+                        <mat-icon class="icon-size-5" svgIcon="calendar_today"></mat-icon>
+                        <span class="ml-2">{{ (_planFollowUpDashboardService.stateSelected$ | async)?.selected?.monthYear?.year }}</span>
+                    </button>
+                    <mat-menu #yearMenu="matMenu"  >
+                        <button
+                            *ngFor="let item of (_planFollowUpDashboardService.stateSelection$ | async).selection?.year" mat-menu-item
+                            (click)="changeYear(item)">
+                                {{item}}
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <div class="ml-2">
+                    <button
+                        class="hidden sm:inline-flex"
+                        mat-stroked-button
+                        [matMenuTriggerFor]="monthMenu">
+                        <mat-icon class="icon-size-5" svgIcon="calendar_view_month"></mat-icon>
+                        <span class="ml-2">{{ (_planFollowUpDashboardService.stateSelected$ | async)?.selected?.monthYear?.month?.label }}</span>
+                    </button>
+                    <mat-menu #monthMenu="matMenu">
+                        <button
+                            *ngFor="let item of (_planFollowUpDashboardService.stateSelection$ | async).selection?.month" mat-menu-item
+                            (click)="changeMonth(item)">
+                                {{item.label}}
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <div class="ml-2">
+                    <button
+                        class="hidden sm:inline-flex ml-3"
+                        mat-flat-button
+                        [matMenuTriggerFor]="planLabelMenu"
+                        [color]="'primary'">
+                        <mat-icon class="icon-size-5" svgIcon="label_important"></mat-icon>
+                        <span class="ml-2">{{ (_planFollowUpDashboardService.stateSelected$ | async)?.selected?.plan?.label }}</span>
+                    </button>
+                    <mat-menu #planLabelMenu="matMenu"  >
+                        <button
+                            *ngFor="let item of (_planFollowUpDashboardService.stateSelection$ | async).selection?.plan" mat-menu-item
+                            (click)="changePlanLabel(item)">
+
+                            {{item.label}}
+                        </button>
+                    </mat-menu>
+                </div>
+
+
+
+
+                <!-- Actions menu (visible on xs) -->
+                <!-- <div class="sm:hidden">
+                    <button
+                        [matMenuTriggerFor]="actionsMenu"
+                        mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                        <button mat-menu-item>Export</button>
+                        <button mat-menu-item>Reports</button>
+                        <button mat-menu-item>Settings</button>
+                    </mat-menu>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- <div class="grid grid-cols-2 w-full mt-8" >
+            <div >TOTO</div>
+        </div> -->
+
+        <div class="grid grid-cols-2 w-full mt-8" >
+            <!-- <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row"> -->
+                <!-- Previous statement -->
+                <div
+                    class="relative flex flex-col flex-auto mr-3 mb-3 p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden"
+                    *ngFor="let poste of _planFollowUpDashboardService.getValue(property?.postes)">
+                    <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                        <mat-icon
+                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                            [svgIcon]="'heroicons_outline:check-circle'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <!-- <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ poste.poste.label }}</div> -->
+
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center w-14 h-14 rounded bg-red-100 text-red-800 dark:bg-red-600 dark:text-red-50">
+                                    <mat-icon
+                                        class="text-current"
+                                        [svgIcon]="'heroicons_outline:credit-card'"></mat-icon>
+                                </div>
+                                <div class="w-10/12 ml-4 leading-none">
+                                    <div class="text-sm font-medium text-secondary">{{ poste.poste.label }}</div>
+                                    <div class="mt-2 font-medium text-2xl"> {{ poste.amountReal | currency:'EUR' }} / {{ poste.amountPreview | currency:'EUR' }} </div>
+                                    <mat-progress-bar
+                                        class="mt-3 rounded-full"
+                                        [color]="'warn'"
+                                        [mode]="'determinate'"
+                                        [value]="poste.gaugeValue">
+                                    </mat-progress-bar>
+                                </div>
+                                <div class="flex items-end justify-end min-w-18 mt-auto ml-6">
+                                    <div class="text-lg leading-none">{{poste.gaugeValue}}%</div>
+                                    <mat-icon
+                                        class="text-green-600 icon-size-4 ml-1"
+                                        [svgIcon]="'heroicons_solid:arrow-narrow-down'"></mat-icon>
+                                </div>
+                            </div>
+
+                            <!-- <div class="flex items-center">
+                                <div class="flex-auto ml-4 leading-none">
+                                    <mat-progress-bar
+                                        class="mt-3 rounded-full"
+                                        [color]="'green'"
+                                        [mode]="'determinate'"
+                                        [value]="poste.gaugeValue">
+                                    </mat-progress-bar>
+                                </div>
+                                <div class="flex items-end justify-end min-w-18 mt-auto ml-6">
+                                    <div class="text-lg leading-none">{{ poste.gaugeValue }}%</div>
+                                    <mat-icon
+                                        class="text-green-600 icon-size-4 ml-1"
+                                        [svgIcon]="'heroicons_solid:arrow-narrow-down'"></mat-icon>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="text-green-600 font-medium text-sm"> -->
+
+
+                                <!-- <progress-bar-custom class="w-full" [reverseColor]="poste.poste.code===enumMovement.credit.toString() ? true : false" [inputValue]="poste.gaugeValue"></progress-bar-custom> -->
+
+                            <!-- </div> -->
+                        </div>
+                        <!-- <div class="ml-auto -mt-2">
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="previousStatementMenu">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                            </button>
+                            <mat-menu #previousStatementMenu="matMenu">
+                                <button mat-menu-item>
+                                    <span class="flex items-center">
+                                        <mat-icon
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:credit-card'"></mat-icon>
+                                        <span>View statement</span>
+                                    </span>
+                                </button>
+                                <button mat-menu-item>
+                                    <span class="flex items-center">
+                                        <mat-icon
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:cash'"></mat-icon>
+                                        <span>Spending breakdown</span>
+                                    </span>
+                                </button>
+                                <button mat-menu-item>
+                                    <span class="flex items-center">
+                                        <mat-icon
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:receipt-tax'"></mat-icon>
+                                        <span>Tax breakdown</span>
+                                    </span>
+                                </button>
+                                <mat-divider class="my-2"></mat-divider>
+                                <button mat-menu-item>
+                                    <span class="flex items-center">
+                                        <mat-icon
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:printer'"></mat-icon>
+                                        <span>Print statement</span>
+                                    </span>
+                                </button>
+                                <button mat-menu-item>
+                                    <span class="flex items-center">
+                                        <mat-icon
+                                            class="icon-size-5 mr-3"
+                                            [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                                        <span>Email statement</span>
+                                    </span>
+                                </button>
+                            </mat-menu>
+                        </div> -->
+                    </div>
+
+
+                    <div
+                        class="grid grid-cols-12 mt-4 -mx-6">
+                        <div class="col-span-6 mx-6">
+                            <div class="text-sm font-medium leading-none text-secondary">&nbsp;</div>
+                        </div>
+                        <div class="col-span-2 mx-6 ">
+                            <div class="text-sm font-medium leading-none text-secondary">Reel</div>
+                        </div>
+                        <div class="col-span-2 mx-6">
+                            <div class="text-sm font-medium leading-none text-secondary">Prevision</div>
+                        </div>
+                        <div class="col-span-2 mx-6 ">
+                            <div class="text-sm font-medium leading-none text-secondary">&nbsp;</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="grid grid-cols-12  -mx-6"
+                        *ngFor="let planPoste of poste.planPostes">
+                        <div class="col-span-6 mx-6 my-2">
+                            <!-- <div class="text-sm font-medium leading-none text-secondary">&nbsp;</div> -->
+                            <div class="font-medium whitespace-nowrap">{{planPoste.label}}</div>
+                        </div>
+                        <div class="col-span-2 mx-6 my-2">
+                            <!-- (click)="GetAmountReal(planPoste.filter.monthYear,planPoste.idPlanPoste,poste.poste.id,planTracking.datas.plan.id)" -->
+                            <button
+                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                mat-button
+                                (click)="onRealAmountClick(planPoste.label, planPoste.idPlanPoste, poste.poste.id, _planFollowUpDashboardService.getValue(property?.plan)?.id)">
+                                <span class="font-medium text-sm text-secondary">{{ planPoste.amountReal | currency:'EUR' }}</span>
+                            </button>
+
+                            <!-- <div class="font-medium whitespace-nowrap">{{ planPoste.amountReal | currency:'EUR' }}</div> -->
+                        </div>
+                        <div class="col-span-2 mx-6 my-2">
+                            <button
+                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                mat-button
+                                (click)="onPreviewAmountClick(planPoste.idPlanPoste, poste.poste.id, _planFollowUpDashboardService.getValue(property?.plan)?.id)">
+                                <span class="font-medium text-sm text-secondary">{{ planPoste.amountPreview | currency:'EUR' }}</span>
+                            </button>
+                            <!-- <div class="font-medium whitespace-nowrap">{{ planPoste.amountPreview | currency:'EUR' }}</div> -->
+                        </div>
+                        <div class="col-span-2 mx-6 my-2">
+                            <mat-progress-bar
+                                class="mt-3 rounded-full"
+                                [color]="planPoste.gaugeValue>110 ? 'accent' : planPoste.gaugeValue>90 ? 'warn'  : 'primary'"
+                                [mode]="'determinate'"
+                                [matTooltip]="planPoste.gaugeValue + '%'"
+                                [value]="planPoste.gaugeValue">
+                            </mat-progress-bar>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- <div
+                        class="flex flex-row flex-wrap mt-4 -mx-6"
+                        *ngFor="let planPoste of poste.planPostes">
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="text-sm font-medium leading-none text-secondary"></div>
+                            <div class="mt-2 font-medium text-3xl leading-none">{{planPoste.label}}</div>
+                        </div>
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="text-sm font-medium leading-none text-secondary">Reel</div>
+                            <div class="mt-2 font-medium text-3xl leading-none">{{ planPoste.amountReal }}</div>
+                        </div>
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="text-sm font-medium leading-none text-secondary">Prevision</div>
+                            <div class="mt-2 font-medium text-3xl leading-none">{{ planPoste.amountPreview }}</div>
+                        </div>
+                    </div> -->
+                </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+<!--
+<div class="grid grid-cols-2">
+<div>t</div>
+<div>o</div>
+<div>c</div>
+</div> -->

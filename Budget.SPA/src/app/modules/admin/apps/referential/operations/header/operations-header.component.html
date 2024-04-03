@@ -1,0 +1,47 @@
+<!-- Header -->
+<div class="grid grid-cols-12 pb-16"
+    [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;"
+    >
+    <div class="col-span-4 p-6 dark">
+        <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">Référentiel opération</div>
+        <div class="flex items-center mt-0.5 font-medium text-gray-50">
+            <ng-container>
+                <div class="flex items-center space-x-2">
+                    <a *ngFor="let item of routerLink"
+                        class="text-gray-100 cursor-pointer"
+                        [routerLink]="['/apps/referential/operations/operation-type-family']">
+                        {{item}}
+                    </a>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="col-span-5"></div>
+    <div class="col-span-3 p-6">
+        <!-- <mat-form-field
+            class="fuse-mat-no-subscript w-full sm:w-72 mt-4 sm:mt-0 sm:ml-4"
+            [floatLabel]="'always'">
+            <mat-icon
+                matPrefix
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                <input
+                    matInput
+                    [matAutocomplete]="auto"
+                    placeholder="Recherche"
+                    formControlName="tiers">
+
+                <mat-autocomplete
+                    #auto="matAutocomplete"
+                    autoActiveFirstOption
+                    [displayWith]="displayFn">
+                    *ngFor="let item of (filteredTiers | async)" [value]="item"
+                    <mat-option  >
+                        toto
+                    </mat-option>
+                </mat-autocomplete>
+        </mat-form-field> -->
+    </div>
+</div>
+

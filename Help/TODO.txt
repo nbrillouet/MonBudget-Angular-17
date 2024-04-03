@@ -1,0 +1,34 @@
+-il peut y avoir 2 retrait identique sur meme journee
+-operations: le defilement ne marche plus
+-ajout compte: ne marche pas.
+-detail account statement : ne marche pas: refaire detail
+-2 imports a la suite--> fichier locké
+-page des import: chargement onglet incorrect
+-refaire les gestions erreurs comme dans OGR
+-ajouter reference lors de la recherche de doublon, faire une ref auto pour credit agricole
+-import: lors de modification (operation inconnu) la date d'integration change anormalement
+
+-import : revoir presensation avec archives et en cours
+-des quil y a erreur -> mise a jour affichage est pas bon
+[OPERATION_DETAIL] --> jeyword place (et autre) pas bon lorsque provenance internet
+prevoir suppression import pour repasse un fichier
+sauveagarde des comptes na pas de loader
+ajout doperation: ca ne sajoute pas dans la liste a revoir..
+attention: possibilité de doublon parfois (cf topivo u arena)
+attention: operation_method pas bon pour GRAND FRAIS dans nom
+
+-detail: 
+	mettre par ordre alphabetique les listes operation/categories...
+	clic sur operation method ne charge pas les autres combos
+	ajouter un operation place (internet/geo) NA pour les virements et autres frais bancaires..
+	
+
+BUDGET:
+suppression ne fonctionne pas.
+ajout: mettre a jour auto quand enregistrement
+nombre relevé non intégré: ne se met pas a jour qd on modifie recette/depense fix et variable
+
+REF:
+	a la creatio dun compte --> le rajouter dans la liste des virement interne de operation type
+	
+

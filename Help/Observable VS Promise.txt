@@ -1,0 +1,34 @@
+tous les 2 pour des process asynchrones
+
+lorsqu on appelle un observable, il sera appelé seulement si on ajoute le .subscribe()
+
+Observable est lazy il nest pas lancé tant quon ne souscrit pas à lui (.subscribe())
+Promise est eager . Des quon appelle une promise , il est executé
+
+On peut toujours transformé un observable en promise
+Il est preferable de travailler avec des observables
+
+==> convertir un observable en Promise:
+
+Dans le service:
+//on garde le .map
+import 'rxjs/add/operator/map'
+//on ajoute:
+import 'rxjs/add/operator/toPromise'
+
+delete(id) {
+	return this.http.delete(this.url + '/' + id)
+		.map(response => response.json()) --> on enleve le .map
+		.toPromise()
+		.catch(this.handleError);
+}
+
+Dans le composant:
+
+deletePost(post) {
+//il n'ya plus de subscribe. une promise ne prend aucune .then et .catch comme methode et est appelé directemnt
+	this.service.delete(post.id)
+
+}
+
+

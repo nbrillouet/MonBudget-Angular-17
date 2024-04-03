@@ -1,0 +1,67 @@
+<div
+    [formGroup]="_otfDetailService.form.formGroup"
+    ngxsForm="otfDetail"
+    *ngIf="_otfDetailService.formIsLoaded as loaded">
+
+
+    <div class="grid grid-cols-3 gap-2 pt-10">
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div><div></div>
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_movement"></ng-container></div><div></div>
+        <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_image"></ng-container></div><div></div>
+    </div>
+
+
+
+<!-- ============================================================================== -->
+<!-- ===========================       TEMPLATE        ============================ -->
+<!-- ============================================================================== -->
+
+    <!-- ===========================       label        ============================ -->
+    <ng-template #tp_label>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Libellé</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.label"
+                [formControlName]="property.label">
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       movement        ============================ -->
+    <ng-template #tp_movement>
+        <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+            <mat-label>Mouvement</mat-label>
+            <mat-select
+                [attr.data-cy]="property.movement"
+                [formControlName]="property.movement"
+                [compareWith]="compareObjects">
+                    <mat-option *ngFor="let item of (_otfDetailService.stateFilter$ | async)?.datas?.movement" [value]="item">
+                        {{ item?.label }}
+                    </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+    <!-- ===========================       image        ============================ -->
+    <ng-template #tp_image>
+        <div class="grid grid-cols-6">
+            <div>
+                <img class="w-10 h-10 rounded-full ml-3 mt-1" [src]="getValue(_otfDetailService, property?.asset)?.code">
+            </div>
+            <div class="col-span-2"></div>
+            <div class="col-span-3">
+                <mat-form-field class="w-full" appearance="outline" floatLabel="always" >
+                    <mat-label>Icône</mat-label>
+                    <mat-select
+                        [attr.data-cy]="property.asset"
+                        [formControlName]="property.asset"
+                        [compareWith]="compareObjects">
+                        <mat-option *ngFor="let item of (_otfDetailService.stateFilter$ | async)?.datas?.asset" [value]="item">
+                            <img class="w-10 h-10" [src]="item.code">
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </ng-template>
+</div>

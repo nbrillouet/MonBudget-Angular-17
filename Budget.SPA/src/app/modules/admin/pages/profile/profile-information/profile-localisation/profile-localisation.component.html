@@ -1,0 +1,10 @@
+<ng-container
+    ngxsForm="userDetail"
+    [formGroup]="_profileService.form.formGroup"
+    *ngIf="property">
+
+    <g-map-search *ngIf="userForDetail"  [gMapAddressFilterData]="getGMapAddressFilterData()" (changeGMapAddress)="onChangeGMapAddress($event)"></g-map-search>
+
+
+</ng-container>
+

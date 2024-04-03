@@ -1,0 +1,112 @@
+
+<div class="flex flex-col flex-auto w-full">
+    <div class="flex flex-wrap w-full p-10">
+
+        <!-- global - Titre -->
+        <div class="flex items-center justify-between w-full">
+            <div>
+                <div class="text-3xl font-semibold tracking-tight leading-8">Evolution globale</div>
+                <div class="font-medium tracking-tight text-secondary">Evolution sur les 12 derniers mois. Comparaison de la moyenne des 12 derniers mois avec le mois en cours</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+            <!-- Debit -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionBrutDebit">
+            </widget-card-chart-bar>
+
+            <!-- Credit -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionBrutCredit">
+            </widget-card-chart-bar>
+
+            <!-- Balance -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionBrutBalance">
+            </widget-card-chart-bar>
+        </div>
+
+        <!-- no virement - Titre -->
+        <div class="flex items-center justify-between w-full pt-8">
+            <div>
+                <div class="text-3xl font-semibold tracking-tight leading-8">Evolution avec exclusion des virements internes</div>
+                <div class="font-medium tracking-tight text-secondary">Evolution sur les 12 derniers mois. Comparaison de la moyenne des 12 derniers mois avec le mois en cours</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+            <!-- Debit -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionNoIntTransferDebit">
+            </widget-card-chart-bar>
+
+            <!-- Credit -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionNoIntTransferCredit">
+            </widget-card-chart-bar>
+
+            <!-- Balance -->
+            <widget-card-chart-bar [widgetCardChartBar]="_asChartEvolutionService.asChartEvolutionNoIntTransferBalance">
+            </widget-card-chart-bar>
+        </div>
+
+        <!-- categorie personnalisée - Titre -->
+        <div class="flex items-center justify-between w-full pt-8">
+            <div>
+                <div class="text-3xl font-semibold tracking-tight leading-8">Evolution de catégories personnalisées</div>
+                <div class="font-medium tracking-tight text-secondary">Evolution sur les 12 derniers mois. Comparaison de la moyenne des 12 derniers mois avec le mois en cours</div>
+            </div>
+            <div class="flex items-center ml-6">
+                <form
+                    *ngIf="(_asChartEvolutionService.state$ | async)?.loader['asChartEvolutionCustomOtfFilter']?.loaded"
+                    name="operationForm"
+                    [formGroup]="_asChartEvolutionService.customOtfForm">
+                    <mat-form-field appearance="outline" floatLabel="always" >
+                        <mat-label>Catégorie d'opérations</mat-label>
+
+                        <mat-select
+                            class="mini-select"
+                            [compareWith]="compareObjects"
+                            formControlName="operationTypeFamilies"
+                            placeholder="Catégorie d'opérations"
+                            multiple>
+
+                            <mat-optgroup *ngFor="let group of _asChartEvolutionService.asChartEvolutionCustomOtfFilter.operationTypeFamilies;" [label]="group.label">
+                                <mat-option *ngFor="let item of group.selects" [value]="item">
+                                {{ item.label }}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+            <ng-container *ngFor="let asChartEvolutionCustomOtf of _asChartEvolutionService.asChartEvolutionCustomOtfs">
+                <widget-card-chart-bar [widgetCardChartBar]="asChartEvolutionCustomOtf">
+                </widget-card-chart-bar>
+            </ng-container>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

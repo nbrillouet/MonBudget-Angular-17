@@ -1,0 +1,57 @@
+
+    <ng-container *ngFor="let bankFamily of _accountListService.value; trackBy: trackByFn">
+        <div class="flex justify-start items-center">
+            <img class="object-cover h-12 w-12" [src]="bankFamily.url">
+            <div class="pl-5 text-3xl font-semibold tracking-tight leading-8 align-middle">{{ bankFamily.label }}</div>
+        </div>
+        <ng-container *ngFor="let bankSubFamily of bankFamily.bankSubFamily; trackBy: trackByFn">
+            <ng-container *ngFor="let bankAgency of bankSubFamily.bankAgency; trackBy: trackByFn">
+                <div class="font-medium tracking-tight text-secondary">{{ bankSubFamily.label }} / {{ bankAgency.label }}</div>
+
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-4 mb-6"
+                    *ngIf="_accountListService.isStateLoaded">
+                    <ng-container *ngFor="let account of bankAgency.accountList; trackBy: trackByFn">
+
+                        <a
+                            class="p-6 rounded-lg shadow bg-card cursor-pointer rounded-lg hover:shadow-xl transition-shadow duration-150 ease-in-out"
+                            (click)="onAccountClick(account.id)">
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-center p-4 rounded-full bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary">
+                                    <mat-icon class="text-current" *ngIf="account.accountType.id === 2">credit_card</mat-icon>
+                                    <mat-icon class="text-current" *ngIf="account.accountType.id === 3">savings</mat-icon>
+                                </div>
+                                <mat-icon svgIcon="heroicons_solid:x" class="flex items-center icon-size-4 rounded-full bg-red-400 text-white hover:bg-red-600"></mat-icon>
+                            </div>
+                            <!-- Title -->
+                            <div class="mt-5 text-lg font-medium leading-5">{{account.label}}</div>
+                            <!-- Description -->
+                            <div class="mt-0.5 line-clamp-2 text-secondary">{{account.number}}</div>
+                            <div class="mt-0.5 line-clamp-2 text-secondary">
+                                <div class="flex">
+                                    <div>{{ _userLoggedService.userForLogged.firstName }} {{ _userLoggedService.userForLogged.lastName }}</div>
+                                    <div *ngIf="account.linkedUsers.length===1"> - {{ account.linkedUsers[0].label }}</div>
+                                </div>
+                            </div>
+                            <!-- Solde -->
+                            <div class="flex items-center mt-4 text-md font-md">
+                                <div class="text-secondary">Solde:</div>
+                                <div class="ml-1" *ngIf="account.solde.solde===0">{{account.solde.solde}} €</div>
+                                <div class="ml-1 text-green-600" *ngIf="account.solde.solde>0">{{account.solde.solde}} €</div>
+                                <div class="ml-1 text-red-600" *ngIf="account.solde.solde<0">{{account.solde.solde}} €</div>
+                            </div>
+                        </a>
+                    </ng-container>
+                    <!-- New board -->
+                    <div
+                        class="flex flex-col items-center justify-center w-56 rounded-lg cursor-pointer border-2 border-gray-300 border-dashed hover:bg-hover transition-colors duration-150 ease-in-out"
+                        (click)="onAccountCreateClick(bankFamily.id, bankSubFamily.id, bankAgency.id)">
+                        <mat-icon
+                            class="icon-size-12 text-hint"
+                            [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>

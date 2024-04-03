@@ -1,0 +1,67 @@
+
+<!-- Header -->
+<div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-10 dark"
+    [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference?.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;">
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 pr-2">
+        <button
+            mat-mini-fab
+            [color]="'primary'"
+            matTooltip="retour"
+            (click)="movePrevious()">
+            <mat-icon [svgIcon]="'heroicons_outline:chevron-left'"></mat-icon>
+        </button>
+    </div>
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 pr-2 ">
+        <div class="box-content h-20 w-20 border-2 rounded-2xl">
+            <img
+                class="object-contain shadow rounded-2xl"
+                @fadeIn
+                [src]="getAsset()"
+                [matTooltip]="getValue(property.operationTypeFamily)?.label">
+        </div>
+    </div>
+    <div class="flex-1 min-w-0">
+        <div>
+            <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">
+                {{ getValue(property.operationTypeFamily)?.label }}
+            </div>
+            <div class="flex items-center mt-0.5 font-medium text-gray-50">
+                {{ getValue(property.labelAs) }}
+            </div>
+        </div>
+    </div>
+    <!-- Actions -->
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+        <ng-container *ngIf="_asifDetailService.asifSaveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action_in_progress"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="!_asifDetailService.asifSaveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action"></ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #tp_action_in_progress>
+    <button
+        mat-flat-button
+        [color]="'warn'">
+        <span class="flex justify-between ml-2 mr-1">
+            Enregistrement en cours...
+            <span matSuffix>
+                <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+              </span>
+        </span>
+    </button>
+</ng-template>
+
+<ng-template #tp_action>
+    <button
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="!_asifDetailService.form.formGroup.valid"
+        (click)='save()'>
+        <span class="ml-2 mr-1">Enregistrer</span>
+    </button>
+</ng-template>
+

@@ -1,0 +1,9 @@
+commande:
+voir les depot distant:
+git remote
+
+ajouter repo distant:
+git remote add https://github.com/nbrillouet/MonBudget.git
+
+[Initialiser la destination du push]
+git push --set-upstream MonBudget master

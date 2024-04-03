@@ -1,0 +1,3 @@
+
+[Paginator]
+https://blog.angular-university.io/angular-material-data-table/

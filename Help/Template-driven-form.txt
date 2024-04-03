@@ -1,0 +1,27 @@
+[bouton submit en dehors de la Form]
+-->form:
+<form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
+</form>
+-->button:
+<button form="editForm">Save changes</button>
+
+[acces aux elements du form dans le ts]
+HTML:
+<form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
+</form>
+
+TS:
+définir:
+@ViewChild('editForm') editForm: NgForm;
+
+Acces dans procedure:
+(this.user etant le dataset)
+ //permet de ne plus rendre dirty la form (par exemple apres un enregistrement)
+message d'alerte:
+<div [hidden]="!editForm.dirty">
+	Information: you have made changes. any unsaved changes will be lost
+</div>
+
+Exemple: dans bouton save:
+this.editForm.reset(this.user);
+La form ne sera plus dirty, le message d'alerte ne sera plus visible

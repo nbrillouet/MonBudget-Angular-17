@@ -1,0 +1,5 @@
+[avoir de l'aide sur une commande]
+get-help {something}
+
+[revenir a une migration anterieur]
+Update-Database -Migration:"20180227143906_alterUser1"

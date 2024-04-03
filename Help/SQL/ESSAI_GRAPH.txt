@@ -1,0 +1,128 @@
+/****** Script de la commande SelectTopNRows à partir de SSMS  ******/
+SELECT 
+	SUM([PreviewAmount]) AS [PreviewAmount] ,
+	[Month],
+	[Year]
+INTO #T_B
+FROM
+  (
+  SELECT 
+      [PreviewAmount],
+	  IdPlanPoste
+      ,[Month]
+      ,[Year]
+  FROM [XmlToSwift_Demo].[dbo].[V_PLAN_GLOBAL]
+  where idplan=4
+  GROUP BY [PreviewAmount],[MONth],[year],IdPlanPoste
+  ) AS T
+  GROUP BY [Month],
+  [Year]
+
+  select * from #T_B
+
+  select #T_B.*, coalesce(T.NonBudgete,0) AS NonBudgete ,coalesce(Budgete,0) as Budgete,coalesce(Total,0) as total
+  FROM #T_B
+  LEFT JOIN #T_BUDGET T
+	ON #T_B.[Month]=T.[Month]
+	AND #T_B.[year]=T.[year]
+  
+  
+  SELECT 
+	SUM(CASE 
+      WHEN IN_PLAN=0  THEN AMOUNT_OPERATION
+	  
+      ELSE 0 
+    END) AS 'NonBudgete',
+	SUM(CASE
+		WHEN IN_PLAN=1  THEN AMOUNT_OPERATION
+	  
+      ELSE 0 
+    END) AS 'Budgete',
+	SUM(AMOUNT_OPERATION) Total,
+	[Month],
+	[year]
+
+	INTO #T_BUDGET 
+
+	FROM (
+  
+  SELECT 
+	AST.ID,
+	AMOUNT_OPERATION,
+	MONTH(DATE_INTEGRATION) AS [MONTH],
+	YEAR([DATE_INTEGRATION]) AS [YEAR],
+	1 AS IN_PLAN
+  FROM ACCOUNT_STATEMENT AST 
+  INNER JOIN ACCOUNT_STATEMENT_PLAN ASP
+	ON AST.ID=ASP.ID_ACCOUNT_STATEMENT
+  WHERE ID_PLAN=1
+  AND ID_ACCOUNT=2
+  AND AMOUNT_OPERATION<=0
+
+  UNION
+
+   SELECT 
+	AST.ID,
+	AST.AMOUNT_OPERATION,
+	MONTH(DATE_INTEGRATION) AS [MONTH],
+	YEAR([DATE_INTEGRATION]) AS [YEAR],
+	0 AS IN_PLAN
+  FROM ACCOUNT_STATEMENT AST 
+  WHERE NOT EXISTS (
+	SELECT 1 
+	  FROM ACCOUNT_STATEMENT ASTT 
+	  LEFT JOIN ACCOUNT_STATEMENT_PLAN ASP
+		ON AST.ID=ASP.ID_ACCOUNT_STATEMENT
+	  WHERE ASTT.ID=AST.ID AND ID_PLAN=1
+	  )
+  AND ID_ACCOUNT=2
+  AND AMOUNT_OPERATION<=0
+
+  ) AS V
+  GROUP BY [Month],
+	[year]
+
+
+
+
+	select * from V_PLAN_GLOBAL where idPlan = 1
+
+	SELECT [month],[year],
+		SUM([PreviewAmount]) AS [PreviewAmount]
+	FROM (
+		select [month],[year],PreviewAmount,idPlanPoste
+		from V_PLAN_GLOBAL
+		WHERE idPlan=1
+		AND IDPoste=1
+		group by [month],[year],PreviewAmount,idPlanPoste
+	) AS T
+	group by [month],[year]
+
+	SELECT [month],[year],
+		SUM([PreviewAmount]) AS [PreviewAmount]
+	FROM (
+	select [month],[year],PreviewAmount,idPlanPoste
+	from V_PLAN_GLOBAL
+	WHERE idPlan=1
+	AND IDPoste in (2,3)
+	group by [month],[year],PreviewAmount,idPlanPoste
+	) AS T
+	group by [month],[year]
+
+	SELECT 
+		Month(Date_integration) as [Month],
+		Year(Date_integration) as [year],
+		sum(amount_operation) as amount_operation
+	from account_statement
+	WHERE AMOUNT_OPERATION>=0
+	AND Year(Date_integration)=2018
+	AND ID_OPERATION_TYPE_FAMILY<>6
+	group by Month(Date_integration),
+	year(Date_integration)
+
+
+	select * from account_statement 
+	where Year(Date_integration)=2018
+	AND Month(Date_integration)=9
+	and AMOUNT_OPERATION>=0
+	AND ID_OPERATION_TYPE_FAMILY<>6

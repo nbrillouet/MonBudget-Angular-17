@@ -1,0 +1,111 @@
+<div
+    class="px-2 dark"
+    [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference?.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;">
+
+    <div class="grid grid-cols-4 gap-2 py-2 justify-items-strech">
+        <div>
+            <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">
+                <ng-container [ngSwitch]="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)">
+                    <div @slideInTop *ngSwitchCase="_enumService.EnumAsTab.list">Relevés bancaires</div>
+                    <div @slideInTop *ngSwitchCase="_enumService.EnumAsTab.chartEvolution">Evolution</div>
+                    <div @slideInTop *ngSwitchCase="_enumService.EnumAsTab.chartCategorisation">Catégorisation</div>
+                    <div @slideInTop *ngSwitchCase="_enumService.EnumAsTab.internalTransfer">Virements internes</div>
+                </ng-container>
+            </div>
+            <div class="flex items-center mt-0.5 font-medium text-gray-50">
+                {{ _asSoldeService.getValue(asSoldeProperty.account)?.label }}
+            </div>
+        </div>
+        <div>
+            <button
+                mat-icon-button
+                (click)="changeTabIndex(_enumService.EnumAsTab.list)">
+                <mat-icon
+                    [color]="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.list ? 'primary' : ''" svgIcon="mat_outline:article">
+                </mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                (click)="changeTabIndex(_enumService.EnumAsTab.chartEvolution)">
+                <mat-icon
+                    [color]="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.chartEvolution ? 'primary' : ''" svgIcon="mat_outline:article" svgIcon="heroicons_outline:chart-bar">
+                </mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                (click)="changeTabIndex(_enumService.EnumAsTab.chartCategorisation)">
+                <mat-icon
+                    [color]="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.chartCategorisation ? 'primary' : ''" svgIcon="mat_outline:article" svgIcon="heroicons_outline:chart-pie">
+                </mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                (click)="changeTabIndex(_enumService.EnumAsTab.internalTransfer)">
+                <mat-icon
+                    [color]="_asMainService._selectedService.getValue(asMainSelectedProperty.tabIndex)===_enumService.EnumAsTab.internalTransfer ? 'primary' : ''" svgIcon="mat_outline:article" svgIcon="mat_outline:alt_route">
+                </mat-icon>
+            </button>
+        </div>
+        <div class='justify-self-end col-span-2 p-4 rounded-lg bg-gray-500 bg-opacity-80 '>
+            <mat-chip-list
+                class="text-sm"
+                *ngIf="_asSoldeService.isStateLoaded as solde; else tp_solde_loading">
+                Crédit:<mat-chip class="bg-green-600" > {{ _asSoldeService.getValue(asSoldeProperty.credit) }} €</mat-chip>
+                Débit:<mat-chip class="bg-red-600 text-sm" > {{ _asSoldeService.getValue(asSoldeProperty.debit) }} €</mat-chip>
+                Balance:<mat-chip class="text-sm" [ngClass]="_asSoldeService.getValue(asSoldeProperty.total)>0 ? 'bg-green-600' : 'bg-red-600'" > {{ _asSoldeService.getValue(asSoldeProperty.total) }} €</mat-chip>
+                Solde au {{ _asSoldeService.getValue(asSoldeProperty.dateMax) | date :'dd/MM/yyyy' }}:<mat-chip class="text-sm" [ngClass]="_asSoldeService.getValue(asSoldeProperty.solde)>0 ? 'bg-green-600' : 'bg-red-600'" > {{ _asSoldeService.getValue(asSoldeProperty.solde) }} €</mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+
+    <div class="flex justify-between">
+        <div class="flex flex-row">
+            <div
+                class="px-4 py-2 min-w-15 mr-2 rounded-t-lg overflow-hidden bg-hover cursor-pointer"
+                [ngClass]="month.id === _asMainService._selectedService.getValue(asMainSelectedProperty?.monthYear)?.month?.id ? 'bg-primary' : 'bg-gray-700'"
+                (click)="changeMonth(month)"
+                *ngFor="let month of _asMainService._selectionService.getValue(asMainSelectionProperty?.month)">
+                <div class="text-sm leading-6 truncate"> {{ month?.label }}  </div>
+            </div>
+        </div>
+
+
+        <div class="flex flex-row">
+            <div class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover bg-primary">
+                <div class="text-sm leading-6 truncate">{{ _asMainService._selectedService.getValue(asMainSelectedProperty?.monthYear)?.year }}</div>
+            </div>
+            <div class="ml-px rounded-tr-xl bg-hover bg-gray-700">
+                <button
+                    [matMenuTriggerFor]="projectsMenu"
+                    mat-icon-button>
+                    <mat-icon [svgIcon]="'heroicons_outline:dots-horizontal'"></mat-icon>
+                </button>
+                <mat-menu #projectsMenu="matMenu">
+                    <button
+                        mat-menu-item
+                        *ngFor="let year of ( _asMainService._selectionService.getValue(asMainSelectionProperty?.year) )"
+                        (click)="changeYear(year)">
+                        <span>{{year}}</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================================== -->
+<!-- ===========================       TEMPLATE        ============================ -->
+<!-- ============================================================================== -->
+<ng-template #tp_solde_loading>
+    <div  >
+        <div class='pb-8' >
+            <mat-chip-list>
+                <mat-chip>Crédit: <mat-spinner [diameter]="15"></mat-spinner></mat-chip>
+                <mat-chip>Débit: <mat-spinner [diameter]="15"></mat-spinner></mat-chip>
+                <mat-chip>Balance: <mat-spinner [diameter]="15"></mat-spinner></mat-chip>
+                <mat-chip>Solde: <mat-spinner [diameter]="15"></mat-spinner></mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+</ng-template>

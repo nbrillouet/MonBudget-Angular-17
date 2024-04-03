@@ -1,0 +1,57 @@
+[Utilisé pour eviter d'ajouter les ? dans le HTML quand Angular n'a pas fini de charger pour eviter erreur d'affichage de chargement]
+--> creation d'un fichier dans le dossier du composant desiré: (ex: user-detail.resolver.ts)
+
+--> sinspirer du modele ci dessous pour remplir le fichier:
+
+import { UserService };
+import { Injectable } from '@angular/core';
+import { Resolve, Router } from '@angular/router';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
+import { User } from '../../../../_models/User';
+import 'rxjs/add/operator/catch';
+
+@injectable()
+export class UserDetailResolver implements Resolve<User> {
+    
+    constructor(
+        private userService: UserService,
+        private router: Router,
+        private notificationService: NotificationsService
+    ) {}
+
+    resolve(route: ActivatedRouteSnapshot): Observable<User> {
+        return this.UserService.getUser(route.params['idUser'])
+            .catch(error => {
+                this.notificationService.error('Erreur de retour de données', error);
+                this.router.navigate(['/users']);
+
+                return Observable.of(null);
+            })
+    }
+}
+
+-->MODULE
+--> ajouter la reference du fichier dans le module adequate, partie providers
+ex: providers : [ UserDetailResolver ]
+
+--> dans la route concernée, ajouté la ligne resolve
+ex: {
+      path     : '',
+      component: UserListComponent,
+      resolve  : { user: UserDetailResolver },
+      canActivate: [AuthGuard]
+  }
+
+-->COMPOSANT  
+--> injecter: private route: ActivatedRoute
+--> dans le composant, dans ngInit
+au lieu de load via:
+this.loadUser();
+on load a partir de la route:
+    this.route.data.subscribe(data => {
+      this.user = data['user'];
+    })
+
+
+

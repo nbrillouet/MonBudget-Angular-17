@@ -1,0 +1,8 @@
+<div
+    class="h-12 dark">
+
+    <mat-table-filter-paginator
+        [matTableFilterSelected$]="_otfTableService._selectedService.state$"
+        (changeFilterSelected)="_otfTableService.applyFilterSelected($event)">
+    </mat-table-filter-paginator>
+</div>

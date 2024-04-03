@@ -1,0 +1,92 @@
+<div
+    class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-10 dark"
+    [ngStyle]="{'background-image':' url(' + _userLoggedService.userForLogged.userPreference.bannerUrl + ')'}"
+    style="background-repeat:no-repeat; background-position: right;"
+    *ngIf="_planCrudDetailService.formIsLoaded">
+
+    <div class="flex flex-auto items-center min-w-0">
+        <div class="flex-0 w-16 h-16 overflow-hidden">
+            <button
+                mat-mini-fab
+                [color]="'primary'"
+                matTooltip="retour"
+                (click)="movePrevious()">
+                <mat-icon [svgIcon]="'heroicons_outline:chevron-left'"></mat-icon>
+            </button>
+        </div>
+        <div class="flex flex-col min-w-0 ml-4">
+            <ng-container>
+                <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                    {{ getValue(_planCrudDetailService, property?.plan?.label) }}
+                    <!-- {{ _planCrudDetailService?.pageType === 'edit' ? getValue(_planCrudDetailService, property?.plan)?.label : 'Nouveau budget'}} -->
+                </div>
+            </ng-container>
+            <div class="flex items-center">
+                <div class="ml-1.5 leading-6 truncate text-secondary">Détail du budget</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 pr-2">
+        <button
+            mat-mini-fab
+            [color]="'primary'"
+            matTooltip="retour"
+            (click)="movePrevious()">
+            <mat-icon [svgIcon]="'heroicons_outline:chevron-left'"></mat-icon>
+        </button>
+    </div> -->
+
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 pr-2 ">
+        <div class="box-content h-20 w-20">
+            <!-- <img
+                class="object-contain"
+                @fadeIn
+                [src]="(_planCrudDetailService.stateDetail$ | async)?.model?.bankFamily?.url"
+                [matTooltip]="(_planCrudDetailService.stateDetail$ | async)?.model?.bankFamily?.label"> -->
+        </div>
+    </div>
+
+    <div class="flex-1 min-w-0">
+        <div>
+            <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">
+                <!-- {{ (_planCrudDetailService.stateDetail$ | async)?.model?.bankSubFamily?.label }} -->
+            </div>
+            <div class="flex items-center mt-0.5 font-medium text-gray-50">
+                <!-- {{ (_planCrudDetailService.stateDetail$ | async)?.model?.bankAgency?.label }} -->
+            </div>
+        </div>
+    </div>
+    <!-- Actions -->
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+        <ng-container *ngIf="_planCrudDetailService.saveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action_in_progress"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="!_planCrudDetailService.saveInProgress">
+            <ng-container *ngTemplateOutlet="tp_action"></ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #tp_action_in_progress>
+    <button
+        mat-flat-button
+        [color]="'warn'">
+        <span class="flex justify-between ml-2 mr-1">
+            Enregistrement en cours...
+            <span matSuffix>
+                <mat-spinner color="warn" [diameter]="20"></mat-spinner>
+              </span>
+        </span>
+    </button>
+</ng-template>
+
+<ng-template #tp_action>
+    <button
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="!_planCrudDetailService.form.formGroup.valid || !_planCrudDetailService.form.formGroup.dirty"
+        (click)='save()'>
+        <span class="ml-2 mr-1">Enregistrer</span>
+    </button>
+</ng-template>

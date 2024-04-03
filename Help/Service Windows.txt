@@ -1,0 +1,6 @@
+[creation service]
+sc create ServiceFilow  binpath= "C:\Softs\ServiceWindowsNomi\ServiceWindowsNomi.exe" displayname= "Service COMPTA NOMI"
+
+[suppression service]
+sc delete ServiceName
+

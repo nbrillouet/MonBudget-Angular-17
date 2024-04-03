@@ -1,0 +1,15 @@
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+    *ngIf="_planCrudDetailService.formIsLoaded as loaded else tp_progress">
+    <!-- HEADER -->
+    <plan-crud-detail-header></plan-crud-detail-header>
+     <!-- CONTENT -->
+    <plan-crud-detail-content class="flex-auto -mt-5 p-6 pt-2 rounded-t-2xl shadow bg-card" fuseScrollbar></plan-crud-detail-content>
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

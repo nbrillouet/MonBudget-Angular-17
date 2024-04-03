@@ -1,0 +1,154 @@
+<!-- [formGroup]="_profileService.profileForm.formGroup"
+ngxsForm="userDetail"
+*ngIf="_profileService.profileForm as loaded else tp_progress" -->
+
+<!-- *ngIf="(_profileService.userDetailState$ | async).loader['datas']?.loaded as loaded else tp_progress" -->
+<div
+    class="flex flex-col w-full"
+    [formGroup]="_profileService.form.formGroup"
+    ngxsForm="userDetail"
+    *ngIf="property as loaded else tp_progress"
+>
+    <!-- Header -->
+    <div class="flex flex-col shadow bg-card">
+
+        <!-- Cover image -->
+        <div class='bg-primary'>
+            <img
+                class=" h-20 lg:h-40 object-cover "
+                [src]="getValue(property.userPreference.bannerUrl)"
+                alt="user banner">
+        </div>
+
+        <!-- User info -->
+        <div class="flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-8 lg:h-18 bg-card">
+            <!-- Avatar -->
+            <div (mouseenter) ="toogleAvatarEvent(true)" (mouseleave) ="toogleAvatarEvent(false)" class="-mt-26 lg:-mt-22 rounded-full">
+                <img
+                    *ngIf="!toogleAvatar"
+                    class="w-32 h-32 rounded-full ring-4 ring-bg-card"
+                    [src]="getValue(property.userPreference.avatarUrl)"
+                    alt="User avatar"
+                >
+
+                <div
+                    *ngIf="toogleAvatar"
+                    class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                    <!-- Upload / Remove avatar -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-20">
+                        <div>
+                            <input
+                                id="avatar-file-input"
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                type="file"
+                                [multiple]="false"
+                                [accept]="'image/jpeg, image/png'"
+                                (change)="uploadAvatar(avatarFileInput.files)"
+                                #avatarFileInput>
+                            <label
+                                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                for="avatar-file-input"
+                                matRipple>
+                                <mat-icon
+                                    class="text-white"
+                                    [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                            </label>
+                        </div>
+                        <div>
+                            <button
+                                mat-icon-button
+                                (click)="removeAvatar()">
+                                <mat-icon
+                                    class="text-white"
+                                    [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Image/Letter -->
+                    <img
+                        class="object-cover w-full h-full"
+                        [src]="getValue(property.userPreference.avatarUrl)">
+                    <!-- <div
+                        class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                        *ngIf="!_profileService.getAvatarUrlValue()">
+                        {{ _profileService.getUsernameValue() }}
+                    </div> -->
+                </div>
+                <!-- </div> -->
+            </div>
+
+            <!-- Details -->
+            <div class="flex flex-col items-center lg:items-start mt-4 lg:mt-0 lg:ml-8">
+                <div class="text-lg font-bold leading-none">{{ getValue(property.firstName) }} {{ getValue(property.lastName) }}</div>
+                <div class="text-secondary">{{ getValue(property.gMapAddress.gMapLocality)?.label }}, {{ getValue(property.gMapAddress.gMapCountry)?.label }}</div>
+            </div>
+
+            <!-- Separator -->
+            <div class="hidden lg:flex h-8 mx-8 border-l-2"></div>
+
+            <!-- Stats -->
+            <!-- <div class="flex items-center mt-6 lg:mt-0 space-x-6">
+                <div class="flex flex-col items-center">
+                    <span class="font-bold">200k</span>
+                    <span class="text-sm font-medium text-secondary">FOLLOWERS</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="font-bold">1.2k</span>
+                    <span class="text-sm font-medium text-secondary">FOLLOWING</span>
+                </div>
+            </div> -->
+
+            <!-- Menu -->
+            <div class="flex items-center mt-8 mb-4 lg:m-0 lg:ml-auto space-x-6">
+                <!-- (click)="toggleEditMode(true)" -->
+                <!-- <button
+                    mat-stroked-button
+
+                    >
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                    <span class="ml-2">Edit</span>
+                </button> -->
+                <button
+                    mat-button
+                    [ngClass]="myHeaderTab===enumHeaderTab.info?'font-medium':'text-secondary'"
+                    class="font-medium"
+                    (click)="myHeaderTab=enumHeaderTab.info">
+                    Informations
+                </button>
+                <button
+                    mat-button
+                    [ngClass]="myHeaderTab===enumHeaderTab.pref?'font-medium':'text-secondary'"
+                    (click)="myHeaderTab=enumHeaderTab.pref">
+                    Préférences
+                </button>
+                <button
+                    mat-button
+                    [ngClass]="myHeaderTab===enumHeaderTab.mdp?'font-medium':'text-secondary'"
+                    (click)="myHeaderTab=enumHeaderTab.mdp">
+                    Mot de passe
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <ng-container [ngSwitch]="myHeaderTab">
+        <profile-information *ngSwitchCase="enumHeaderTab.info"></profile-information>
+        <profile-preference *ngSwitchCase="enumHeaderTab.pref"></profile-preference>
+    </ng-container>
+
+
+
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+    >
+    </mat-progress-bar>
+</ng-template>

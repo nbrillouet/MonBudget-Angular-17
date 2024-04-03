@@ -1,0 +1,31 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" >
+    <!-- HEADER -->
+    <asif-table-header ></asif-table-header>
+
+    <!-- CONTENT -->
+    <ng-container>
+        <main
+            fuseScrollbar
+            class="flex-grow">
+            <mat-table-filter
+                [matTableFilter]="matTableFilter"
+                (rowClickEvent)="onRowClick($event)"
+                (changeFilterSelected)="applyFilterSelected($event)"
+                (changeFilterSelection)="applyFilterSelection($event)">
+            </mat-table-filter>
+        </main>
+        <footer class="h-14 dark">
+            <mat-table-filter-paginator
+                [matTableFilterSelected$]="_asifTableService.stateSelected$"
+                (changeFilterSelected)="applyFilterSelected($event)">
+            </mat-table-filter-paginator>
+        </footer>
+    </ng-container>
+</div>
+
+<!-- <ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template> -->

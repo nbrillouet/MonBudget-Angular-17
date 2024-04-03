@@ -1,0 +1,7 @@
+[eviter les references loop dans les requetes]
+dans startup.cs
+dans configureServices ajouter a la fin:
+services.AddMvc().AddJsonOptions(opt =>
+{
+	opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});

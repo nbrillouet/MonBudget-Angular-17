@@ -1,0 +1,168 @@
+<div
+    [formGroup]="_accountDetailService.form.formGroup"
+    ngxsForm="accountDetail"
+    *ngIf="_accountDetailService.formIsLoaded as loaded">
+
+    <mat-tab-group>
+
+        <!-- DETAIL -->
+        <mat-tab label="Détail" >
+            <ng-template matTabContent >
+                <div class="grid grid-cols-3 gap-2 pt-10">
+                    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div>            <div></div>
+                    <div>                   <ng-container *ngTemplateOutlet="tp_number"></ng-container></div>           <div class="col-span-2"></div>
+                    <div>                   <ng-container *ngTemplateOutlet="tp_account_type"></ng-container></div>     <div class="col-span-2"></div>
+                    <div>                   <ng-container *ngTemplateOutlet="tp_start_amount"></ng-container></div>     <div class="col-span-2"></div>
+                    <div>                   <ng-container *ngTemplateOutlet="tp_alert_threshold"></ng-container></div>  <div class="col-span-2"></div>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Classification -->
+        <mat-tab label="Classification">
+            <ng-template matTabContent>
+                <div class="grid grid-cols-4 pt-10">
+                    <div class="columns-1 items-start">
+                        <div ><ng-container *ngTemplateOutlet="tp_bank_family"></ng-container></div>
+                        <div ><ng-container *ngTemplateOutlet="tp_bank_sub_family"></ng-container></div>
+                        <div ><ng-container *ngTemplateOutlet="tp_bank_agency"></ng-container></div>
+                    </div>
+                    <g-map-search class="col-span-3 p-5 pl-20" xformat="small"  [gMapAddressFilterData]="_accountDetailService.getGMapAddressFilterData()" ></g-map-search>
+                </div>
+
+            </ng-template>
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+<!-- ============================================================================== -->
+<!-- ===========================       TEMPLATE        ============================ -->
+<!-- ============================================================================== -->
+
+<!-- __________________________________ DETAIL ____________________________________ -->
+
+<!-- ===========================       label        ============================ -->
+    <ng-template #tp_label>
+        <mat-form-field class="w-full">
+            <mat-label>Libellé compte bancaire</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.label"
+                [formControlName]="property.label">
+        </mat-form-field>
+    </ng-template>
+
+<!-- ===========================       number        ============================ -->
+    <ng-template #tp_number>
+        <mat-form-field class="w-full">
+            <mat-label>Numéro compte bancaire</mat-label>
+            <input
+                matInput
+                [attr.data-cy]="property.number"
+                [formControlName]="property.number">
+        </mat-form-field>
+    </ng-template>
+
+<!-- ===========================      account_type   ============================ -->
+    <ng-template #tp_account_type>
+        <mat-error *ngIf="getControl(property.accountType).errors">
+            <p>La sélection ne doit pas être vide</p>
+        </mat-error>
+        <mat-form-field class="w-full" >
+            <mat-label>Type de compte</mat-label>
+            <mat-select
+                [attr.data-cy]="property.accountType"
+                [formControlName]="property.accountType"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_accountDetailService.stateFilter$ | async).datas?.accountType" [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+
+<!-- ===========================       start amount        ============================ -->
+    <ng-template #tp_start_amount>
+        <mat-form-field class="w-full">
+            <mat-label>Montant de départ</mat-label>
+            <input
+                type="number"
+                matInput
+                [attr.data-cy]="property.startAmount"
+                [formControlName]="property.startAmount">
+            <mat-icon matSuffix>euro_symbol</mat-icon>
+        </mat-form-field>
+    </ng-template>
+
+<!-- ===========================       alert Threshold        ============================ -->
+    <ng-template #tp_alert_threshold>
+        <mat-form-field class="w-full">
+            <mat-label>Seuil d'alerte</mat-label>
+            <input
+                type="number"
+                matInput
+                [attr.data-cy]="property.alertThreshold"
+                [formControlName]="property.alertThreshold">
+            <mat-icon matSuffix>euro_symbol</mat-icon>
+        </mat-form-field>
+    </ng-template>
+
+<!-- ________________________________ CLASSIFICATION ____________________________________ -->
+
+<!-- ===========================       bank_family        ============================ -->
+    <ng-template #tp_bank_family>
+        <mat-error *ngIf="getControl(property.bankFamily).errors">
+            <p>La sélection ne doit pas être vide</p>
+        </mat-error>
+        <mat-form-field class="w-full" >
+            <mat-label>Groupe Bancaire</mat-label>
+            <mat-select
+                [attr.data-cy]="getProperty(property.bankFamily)"
+                [formControlName]="getProperty(property.bankFamily)"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_accountDetailService.stateFilter$ | async).datas.bankFamily  " [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+<!-- ===========================       bank_sub_family        ============================ -->
+    <ng-template #tp_bank_sub_family>
+        <mat-error *ngIf="getControl(property.bankSubFamily).errors">
+            <p>La sélection ne doit pas être vide</p>
+        </mat-error>
+        <mat-form-field class="w-full" >
+            <mat-label>Caisse</mat-label>
+            <mat-select
+                [attr.data-cy]="property.bankSubFamily"
+                [formControlName]="property.bankSubFamily"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_accountDetailService.stateFilter$ | async).datas.bankSubFamily  " [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+<!-- ===========================       bank_agency        ============================ -->
+    <ng-template #tp_bank_agency>
+        <mat-error *ngIf="getControl(property.bankAgency).errors">
+            <p>La sélection ne doit pas être vide</p>
+        </mat-error>
+        <mat-form-field class="w-full" >
+            <mat-label>Agence</mat-label>
+            <mat-select
+                [attr.data-cy]="property.bankAgency"
+                [formControlName]="property.bankAgency"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of (_accountDetailService.stateFilter$ | async).datas.bankAgency" [value]="item">
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
+
+</div>

@@ -1,0 +1,12 @@
+
+<div
+    fuseScrollbar
+    class="h-full pb-10">
+    <mat-table-filter
+        [matTableFilter]="matTableFilter"
+        (rowClickEvent)="onRowClick($event)"
+        (changeFilterSelected)="_asTableService.applyFilterSelected($event)"
+        (changeFilterSelection)="_asTableService.applyFilterSelection($event)">
+    </mat-table-filter>
+</div>
+

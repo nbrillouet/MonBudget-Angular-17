@@ -1,0 +1,14 @@
+==> dans service:
+import { Observable } from 'rxjs/Observable';
+import { rxjs/add/operator/map };
+
+getAll() {
+	return this.http.get(this.url)
+		.map(response => response.json())
+		.catch(this.handleError);
+}
+
+==> dans composant
+this.service.getAll()
+	.subscribe(posts => this.posts = posts);
+	);

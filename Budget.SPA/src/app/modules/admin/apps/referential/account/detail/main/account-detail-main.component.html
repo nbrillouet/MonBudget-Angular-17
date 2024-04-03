@@ -1,0 +1,29 @@
+<!--
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+    [formGroup]="_asifDetailService.asifForm.formGroup"
+    ngxsForm="asifDetail"
+    *ngIf="_asifDetailService.formIsLoaded as loaded else tp_progress" -->
+
+    <!-- [formGroup]="_accountDetailService.accountForm.formGroup" -->
+    <!-- ngxsForm="accountDetail" -->
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden"
+
+    *ngIf="_accountDetailService.formIsLoaded as loaded else tp_progress"
+>
+    <!-- HEADER -->
+    <account-detail-header></account-detail-header>
+     <!-- CONTENT -->
+    <!-- <content class="flex-auto bg-green-600" fuseScrollbar> -->
+
+    <account-detail-content class="flex-auto -mt-5 p-6 sm:p-10 rounded-t-2xl shadow bg-card" fuseScrollbar></account-detail-content>
+    <!-- </content> -->
+
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

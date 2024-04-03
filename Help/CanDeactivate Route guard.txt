@@ -1,0 +1,26 @@
+[permet dempecher l'utilisateur de sortir de la page en cours]
+Implementation
+-->Aller dand le dossier _guards
+-->creer fichier : prevent-unsaved-changes.guard.ts
+--> renseigner le fichier en sinspirant du code ci dessous (a changer selon le composant utilisé, ici UserDetailComponent)
+import { Injectable } from "@angular/core";
+import { CanDeactivate } from '@angular/router';
+import { UserDetailComponent } from "../main/content/apps/user/user-detail/user-detail.component";
+
+@Injectable()
+export class PreventUnsavedChanges implements CanDeactivate<UserDetailComponent> {
+    canDeactivate(component: UserDetailComponent) {
+        if(component.userForm.dirty) {
+            return confirm('Are you sure you want to continue? Any unsaved changes will be lost');
+        }
+
+        return true;
+    }
+}
+
+--> ajouter PreventUnsavedChanges dans le module adequate dans providers
+--> ajouter dans la route :
+	canDeactivate: [PreventUnsavedChanges]
+
+
+

@@ -1,0 +1,243 @@
+<div
+    [formGroup]="_planCrudDetailService.form.formGroup"
+    ngxsForm="planDetail"
+    class="grid grid-cols-4 gap-2 pt-5 overflow-hidden">
+
+    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_label"></ng-container></div>
+    <div><ng-container *ngTemplateOutlet="tp_year"></ng-container></div>
+    <div></div>
+
+    <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_color"></ng-container></div>
+    <div class="col-span-2"></div>
+
+    <div class="col-span-3"><ng-container *ngTemplateOutlet="tp_account"></ng-container></div>
+    <div></div>
+    <!-- <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_account_chip"></ng-container></div> -->
+
+    <div class="col-span-3"><ng-container *ngTemplateOutlet="tp_user"></ng-container></div>
+    <div></div>
+    <!-- <div class="col-span-2"><ng-container *ngTemplateOutlet="tp_user_chip"></ng-container></div> -->
+
+    <!-- <div><ng-container *ngTemplateOutlet="tp_plan_not_as_count"></ng-container></div> -->
+    <!-- <div class="col-span-2"></div> -->
+
+    <!-- ============================================================================== -->
+    <!-- ===========================       TEMPLATE        ============================ -->
+    <!-- ============================================================================== -->
+
+    <!-- __________________________________ DETAIL ____________________________________ -->
+
+    <!-- ===========================       label        ============================ -->
+    <ng-template #tp_label>
+        <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.plan)">
+            <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+                <mat-label>Libellé du budget</mat-label>
+                <input
+                    matInput
+                    [attr.data-cy]="getProperty(_planCrudDetailService, property.plan.label)"
+                    [formControlName]="getProperty(_planCrudDetailService, property.plan.label)">
+            </mat-form-field>
+        </ng-container>
+    </ng-template>
+
+    <!-- ===========================       year        ============================ -->
+    <ng-template #tp_year>
+        <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.plan)">
+            <mat-form-field class="w-full" appearance="outline" floatLabel="always">
+                <mat-label>Année</mat-label>
+                <input
+                    matInput
+                    [attr.data-cy]="getProperty(_planCrudDetailService, property.plan.year)"
+                    [formControlName]="getProperty(_planCrudDetailService, property.plan.year)">
+            </mat-form-field>
+        </ng-container>
+    </ng-template>
+
+    <!-- ===========================       color        ============================ -->
+    <ng-template #tp_color>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex flex-row">
+                <mat-icon
+                    class="icon-size-5"
+                    svgIcon="color_lens"></mat-icon>
+                <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Couleur du budget</div>
+            </legend>
+
+            <div class="flex">
+                <div
+                    class="w-4/6 rounded-full"
+                    [style.background]="getValue(_planCrudDetailService, property.plan.color)"> </div>
+                <div class="w-1/6"></div>
+                <div class="w-1/6">
+                    <button
+                        mat-fab
+                        color="primary"
+                        [colorPicker]="getValue(_planCrudDetailService, property.plan.color)"
+                        (colorPickerChange)="onChangeColor($event)">
+                        <mat-icon svgIcon="published_with_changes"></mat-icon>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.plan)">
+            <mat-form-field class="w-full">
+                <mat-label>Couleur associée</mat-label>
+                <input
+                    matInput
+
+                    [colorPicker]="getValue(_planCrudDetailService, property.plan.color)"
+                    [style.background]="getValue(_planCrudDetailService, property.plan.color)"
+                    (colorPickerChange)="onChangeColor($event)"
+
+                    [attr.data-cy]="getProperty(_planCrudDetailService, property.plan.color)"
+                    [formControlName]="getProperty(_planCrudDetailService, property.plan.color)">
+            </mat-form-field> -->
+        <!-- </ng-container> -->
+    </ng-template>
+
+    <!-- ===========================      accounts   ============================ -->
+    <ng-template #tp_account>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex flex-row">
+                <mat-icon
+                    class="icon-size-5"
+                    svgIcon="account_balance"></mat-icon>
+                <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Comptes bancaires impliqués</div>
+            </legend>
+
+            <div class="flex items-center">
+                <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.accounts)">
+                    <mat-form-field appearance="legacy" class="w-2/6">
+                        <mat-select
+                            [attr.data-cy]="getProperty(_planCrudDetailService, property.accounts.listSelected)"
+                            [formControlName]="getProperty(_planCrudDetailService, property.accounts.listSelected)"
+                            [compareWith]="compareObjects"
+                            multiple>
+                                <mat-optgroup *ngFor="let group of getValue(_planCrudDetailService, property.accounts)?.list" [label]="group.label">
+                                    <mat-option *ngFor="let item of group.selects" [value]="item">
+                                        {{ item?.label }}
+                                    </mat-option>
+                                </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
+                <div class="pl-5 w-4/6">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let group of getValue(_planCrudDetailService, property.accounts)?.listSelected"
+                            [selectable]="false"
+                            [removable]="false">
+                                {{group.label}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
+        </fieldset>
+
+
+
+        <!-- <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.accounts)">
+            <mat-form-field class="w-full">
+                <mat-label>Comptes bancaires impliqués</mat-label>
+                <mat-select
+                    [attr.data-cy]="getProperty(_planCrudDetailService, property.accounts.listSelected)"
+                    [formControlName]="getProperty(_planCrudDetailService, property.accounts.listSelected)"
+                    [compareWith]="compareObjects"
+                    multiple>
+                    <mat-optgroup *ngFor="let group of getValue(_planCrudDetailService, property.accounts)?.list" [label]="group.label">
+                        <mat-option *ngFor="let item of group.selects" [value]="item">
+                            {{ item?.label }}
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
+        </ng-container> -->
+    </ng-template>
+
+    <!-- <ng-template #tp_account_chip>
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let group of getValue(_planCrudDetailService, property.accounts)?.listSelected"
+                [selectable]="false"
+                [removable]="false">
+                    {{group.label}}
+            </mat-chip>
+        </mat-chip-list>
+    </ng-template> -->
+
+    <!-- ===========================      users   ============================ -->
+    <ng-template #tp_user>
+        <fieldset class="border border-solid border-gray-300 p-3 rounded mb-5">
+            <legend class="flex flex-row">
+                <mat-icon
+                    class="icon-size-5"
+                    svgIcon="account_circle"></mat-icon>
+                <div class="ml-1.5 leading-6 truncate text-secondary mat-small">Utilisateurs impliqués</div>
+            </legend>
+
+            <div class="flex items-center">
+                <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.users)">
+                    <mat-form-field appearance="legacy" class="w-2/6">
+                        <mat-select
+                            [attr.data-cy]="getProperty(_planCrudDetailService, property.users.listSelected)"
+                            [formControlName]="getProperty(_planCrudDetailService, property.users.listSelected)"
+                            [compareWith]="compareObjects"
+                            multiple>
+                            <mat-option *ngFor="let item of getValue(_planCrudDetailService, property.users)?.list" [value]="item">
+                                {{ item?.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
+                <div class="pl-5 w-4/6">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let group of getValue(_planCrudDetailService, property.users)?.listSelected"
+                            [selectable]="false"
+                            [removable]="false">
+                                {{group.label}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <!-- <ng-container [formGroupName]="getProperty(_planCrudDetailService, property.users)">
+            <mat-form-field class="w-full" >
+                <mat-label>Utilisateurs impliqués</mat-label>
+                <mat-select
+                    [attr.data-cy]="getProperty(_planCrudDetailService, property.users.listSelected)"
+                    [formControlName]="getProperty(_planCrudDetailService, property.users.listSelected)"
+                    [compareWith]="compareObjects"
+                    multiple>
+                    <mat-option *ngFor="let item of getValue(_planCrudDetailService, property.users)?.list" [value]="item">
+                        {{ item?.label }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container> -->
+    </ng-template>
+
+    <!-- <ng-template #tp_user_chip>
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let group of getValue(_planCrudDetailService, property.users)?.listSelected"
+                [selectable]="false"
+                [removable]="false">
+                    {{group.label}}
+            </mat-chip>
+        </mat-chip-list>
+    </ng-template> -->
+
+    <!-- ===========================       planNotAsCount        ============================ -->
+    <ng-template #tp_plan_not_as_count>
+    <mat-label>Relevés bancaires non pris en compte dans ce budget</mat-label>
+    <button
+        class="w-full"
+        mat-raised-button
+        color="warn"
+        (click)="openAccountStatements()">
+        {{ getValue(_planCrudDetailService, property.planNotAsCount) }} lignes
+    </button>
+    </ng-template>
+</div>

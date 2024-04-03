@@ -1,0 +1,43 @@
+exemple: prevenir qu un avatar est mis a jour pour la toolbar
+
+--> dans Angular / authService
+--> add properties:
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+private avatarUrl = new BehaviorSubject<string>('assets/images/avatars/profile.jpg');
+currentavatarUrl = this.avatarUrl.asObservable();
+
+--> creation d'une nouvelle fonction:
+    changeAvatar(avatarUrl: string) {
+        this.avatarUrl.next(avatarUrl);
+    }
+	
+--> dans login / dans if(user)
+	this.changeAvatar(this.currentUser.avatarUrl);
+
+--> dans toolbar.component.ts 
+	avatarUrl: string;
+--> dans toolbar.component.ts / ngOnInit()	
+	this.authService.currentAvatarUrl.subscribe(avatarUrl => this.avatarUrl = avatarUrl);
+	
+--> dans toolbar.component.html:
+	<img class="avatar" *ngIf="authService.currentUser.avatarUrl" src="{{avatarUrl}}">
+	§§supprimer si present$$ :
+	<!-- <img class="avatar" *ngIf="!authService.currentUser.avatarUrl" src="assets/images/avatars/profile.jpg"> -->
+	
+--> dans app.component.ts / ngOnInit / dans if(user)
+	this.authService.changeAvatar(user.avatarUrl);
+	
+--> dans user-detail.component.ts / ngOnInit()
+	this.authService.currentAvatarUrl.subscribe(avatarUrl=> this.avatarUrl = avatarUrl);
+--> dans user-detail.component.html
+	<img mat-card-image *ngIf="avatarUrl" src="{{avatarUrl}}" alt="{{user.userName}}">
+	§§supprimer si present$$ :
+	<!-- <img mat-card-image *ngIf="!user.avatarUrl" [src]="'assets/images/avatars/profile.jpg'"> -->
+	
+--> dans avatar-editor.component.ts /initializeUploader() / if(response)
+	§§supprimer si present$$ :
+	this.getUserAvatarChange.emit(res.avatarUrl);
+	§§ajouter$$ :
+	this.authService.changeAvatar(res.avatarUrl);
+	

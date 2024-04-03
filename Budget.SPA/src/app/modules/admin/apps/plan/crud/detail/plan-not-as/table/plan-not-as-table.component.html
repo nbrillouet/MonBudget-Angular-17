@@ -1,0 +1,27 @@
+
+<main
+    fuseScrollbar
+    class="flex-grow">
+    <mat-table-filter
+        [matTableFilter]="matTableFilter"
+        (changeFilterSelected)="applyFilterSelected($event)"
+        (changeFilterSelection)="applyFilterSelection($event)"
+        (rowClickEvent)="onRowClick($event)">
+    </mat-table-filter>
+</main>
+
+<div
+    class="h-12 dark">
+    <mat-table-filter-paginator
+        [matTableFilterSelected$]="_planNotAsTableService.stateSelected$"
+        (changeFilterSelected)="_planNotAsTableService.applyFilterSelected($event)">
+    </mat-table-filter-paginator>
+</div>
+
+<!-- (onRowClick)="onRowClick($event)" -->
+<!-- <mat-table-filter
+    [matTableFilter]="matTableFilter"
+
+    (changeFilterSelected)="applyFilterSelected($event)"
+    (changeFilterSelection)="applyFilterSelection($event)">
+</mat-table-filter> -->

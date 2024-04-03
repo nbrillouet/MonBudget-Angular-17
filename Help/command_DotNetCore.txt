@@ -1,0 +1,5 @@
+dotnet watch run
+
+[Changer environnement]
+$env:ASPNETCORE_ENVIRONMENT = "Production" 
+$env:ASPNETCORE_ENVIRONMENT = "Development"

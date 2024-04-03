@@ -1,0 +1,8 @@
+<div
+    class="h-12 dark">
+
+    <mat-table-filter-paginator
+        [matTableFilterSelected$]="_asTableService._selectedService.state$"
+        (changeFilterSelected)="_asTableService.applyFilterSelected($event)">
+    </mat-table-filter-paginator>
+</div>

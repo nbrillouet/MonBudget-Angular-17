@@ -1,0 +1,106 @@
+<ng-container
+
+    ngxsForm="userDetail"
+    [formGroup]="_profileService.form.formGroup"
+    *ngIf="property else tp_progress">
+
+    <div class="mx-6 sm:mx-8 mt-2">
+        <ng-container *ngTemplateOutlet="tp_userName"></ng-container>
+    </div>
+    <div class="mx-6 sm:mx-8">
+        <ng-container *ngTemplateOutlet="tp_lastName"></ng-container>
+    </div>
+    <div class="mx-6 sm:mx-8">
+        <ng-container *ngTemplateOutlet="tp_firstName"></ng-container>
+    </div>
+    <div class="mx-6 sm:mx-8">
+        <ng-container *ngTemplateOutlet="tp_dateOfBirth"></ng-container>
+    </div>
+    <hr class="border-b mx-6 sm:mx-8 mt-4 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center mx-6 sm:mx-8 mb-4 sm:mb-6">
+        <div class="flex items-center">
+
+        </div>
+        <div class="hidden sm:flex flex-auto"></div>
+        <div class="flex items-center mt-4 sm:mt-0">
+            <button
+                class="fuse-mat-button-large w-full mt-6"
+                mat-flat-button
+                [color]="'primary'"
+                [disabled]="(_profileService.state$ | async)?.loader['user-detail-save']?.loading"
+                (click)="save()">
+                <span *ngIf="!(_profileService.state$ | async)?.loader['user-detail-save']?.loading">
+                    Enregistrer
+                </span>
+                <mat-progress-spinner
+                    *ngIf="(_profileService.state$ | async)?.loader['user-detail-save']?.loading"
+                    [diameter]="24"
+                    [mode]="'indeterminate'"></mat-progress-spinner>
+            </button>
+        </div>
+    </div>
+
+
+    <ng-template #tp_userName>
+        <!-- <ng-container formGroupName="couvertureSwap"> -->
+        <mat-form-field class="w-full">
+            <mat-label>Pseudonyme</mat-label>
+            <input matInput
+                [attr.data-cy]="'userName'"
+                [formControlName]="property.userName"
+            >
+        </mat-form-field>
+        <!-- </ng-container> -->
+    </ng-template>
+
+    <ng-template #tp_firstName>
+        <mat-form-field class="w-full">
+            <mat-label>Prénom</mat-label>
+            <input matInput
+                [attr.data-cy]="'firstName'"
+                [formControlName]="property.firstName"
+            >
+        </mat-form-field>
+    </ng-template>
+
+    <ng-template #tp_lastName>
+        <mat-form-field class="w-full">
+            <mat-label>Nom</mat-label>
+            <input matInput
+                [attr.data-cy]="'lastName'"
+                [formControlName]="property.lastName"
+            >
+        </mat-form-field>
+    </ng-template>
+
+    <ng-template #tp_dateOfBirth>
+        <mat-form-field class="w-full">
+            <mat-label>Date de naissance</mat-label>
+            <input matInput
+                [matDatepicker]="dateValeurPicker"
+                [attr.data-cy]="getProperty(property.dateOfBirth)"
+                [formControlName]="getProperty(property.dateOfBirth)">
+            <mat-datepicker-toggle matSuffix [for]="dateValeurPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateValeurPicker></mat-datepicker>
+        </mat-form-field>
+    </ng-template>
+
+    <!-- <ng-template #tp_dateOfBirth>
+        <mat-form-field class="w-full">
+            <mat-label>Date de naissance</mat-label>
+            <input matInput
+                [attr.data-cy]="'dateOfBirth'"
+                [formControlName]= "property.dateOfBirth"
+            >
+        </mat-form-field>
+    </ng-template> -->
+
+
+</ng-container>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

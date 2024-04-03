@@ -1,0 +1,15 @@
+[implementation]
+--> dans le composant fils:
+--> definition
+@Output() getUserAvatarChange = new EventEmitter<string>();
+--> utilisation dans une procedure qui utilise levenment
+this.getUserAvatarChange.emit(res.avatarUrl);
+
+--> dans composant parent:
+--> dans html:
+<avatar-editor (getUserAvatarChange)="updateUserAvatar($event)"></avatar-editor>
+--> dans le composant:
+updateUserAvatar(avatarUrl)
+  {
+    this.user.avatarUrl=avatarUrl;
+  }

@@ -1,0 +1,2 @@
+[avoir toutes les fonctions Angular possibles (ngfor routerlink) dans HTML]
+taper: a-

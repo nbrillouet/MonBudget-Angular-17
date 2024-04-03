@@ -1,0 +1,14 @@
+<div
+    fuseScrollbar
+    class="h-full pb-10  pr-5">
+    <mat-table-filter
+        [matTableFilter]="matTableFilter"
+        (rowClickEvent)="onRowClick($event)"
+        (clickButtonEvent)="onButtonClick($event)"
+        (changeFilterSelected)="_oTableService.applyFilterSelected($event)"
+        (changeFilterSelection)="_oTableService.applyFilterSelection($event)"
+        (toolbarAddItemEvent)="addItem($event)"
+        (toolbarDeleteItemsEvent)="deleteItems($event)"
+        [toolbarDeleteItemsAfter]="this._oTableService.isDeleted">
+    </mat-table-filter>
+</div>

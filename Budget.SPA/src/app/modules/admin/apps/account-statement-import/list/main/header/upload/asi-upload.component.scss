@@ -1,0 +1,39 @@
+.header-upload {
+    // position: relative;
+    height: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    width:100%;
+    position:relative;
+
+
+    .add-file-button {
+        position: absolute;
+        bottom: -37px;
+        right: -27px;
+
+        z-index: 998;
+    }
+
+    .drop-zone {
+        // position: absolute;
+        bottom: 15px;
+        // right: -370px;
+
+        border: dotted 3px white;
+        min-height:100px;
+        min-width:200px;
+        color:white;
+    }
+    .nv-file-over { border: dotted 3px #F44336; } /* Default class applied to drop zones on over */
+
+    .file-upload-info {
+        position: absolute;
+        text-align:right;
+        bottom: 10px;
+        left: -600px;
+        min-height: 75px;
+        max-height: 75px;
+        min-width:600px;
+    }
+}

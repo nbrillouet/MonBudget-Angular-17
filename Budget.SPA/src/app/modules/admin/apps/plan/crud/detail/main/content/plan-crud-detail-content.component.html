@@ -1,0 +1,80 @@
+<mat-tab-group
+        [formGroup]="_planCrudDetailService.form.formGroup"
+        ngxsForm="planDetail"
+        *ngIf="_planCrudDetailService.formIsLoaded as loaded"
+
+        [selectedIndex]="selectedIndex"
+        (selectedTabChange)="onTabClick($event)">
+
+        <!-- Informations générales -->
+        <mat-tab label="Informations générales" >
+            <ng-template matTabContent >
+                <plan-crud-detail-general-content *ngIf="selectedIndex === 0"></plan-crud-detail-general-content>
+            </ng-template>
+        </mat-tab>
+
+        <!-- relevés non catégorisés -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div>Relevés non intégrés (</div>
+                <div class="text-red-600">{{ getValue(_planCrudDetailService, property.planNotAsCount) }}</div>
+                <div>)</div>
+            </ng-template>
+            <ng-template matTabContent >
+                <plan-not-as-table [idPlan]="getValue(_planCrudDetailService, property.plan)?.id" *ngIf="selectedIndex === 1"></plan-not-as-table>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Recettes -->
+        <mat-tab label="Recettes" [disabled]="_planCrudDetailService.pageType==='new'" >
+            <ng-template matTabContent >
+                <!-- <div class="grid grid-cols-4 pt-10">
+                    <div class="columns-1 items-start"> -->
+                        <plan-poste-table *ngIf="selectedIndex === 2" [idPlan]="getValue(_planCrudDetailService, property.plan.id)" [idPoste]="enumPoste.recette"></plan-poste-table>
+                    <!-- </div>
+                </div> -->
+            </ng-template>
+        </mat-tab>
+
+        <!-- Dépenses fixes -->
+        <mat-tab label="Dépenses fixes">
+            <ng-template matTabContent >
+                <!-- <div class="grid grid-cols-4 pt-10">
+                    <div class="columns-1 items-start"> -->
+                        <plan-poste-table *ngIf="selectedIndex === 3" [idPlan]="getValue(_planCrudDetailService, property.plan.id)" [idPoste]="enumPoste.depenseFixe"></plan-poste-table>
+                    <!-- </div>
+                </div> -->
+            </ng-template>
+        </mat-tab>
+
+        <!-- Dépenses variables -->
+        <mat-tab label="Dépenses variables">
+            <ng-template matTabContent >
+                <!-- <div class="grid grid-cols-4 pt-10">
+                    <div class="columns-1 items-start"> -->
+                        <plan-poste-table *ngIf="selectedIndex === 4" [idPlan]="getValue(_planCrudDetailService, property.plan.id)" [idPoste]="enumPoste.depenseVariable"></plan-poste-table>
+                    <!-- </div>
+                </div> -->
+            </ng-template>
+        </mat-tab>
+
+        <!-- Epargne -->
+        <mat-tab label="Epargne">
+            <ng-template matTabContent >
+                <!-- <div class="grid grid-cols-4 pt-10">
+                    <div class="columns-1 items-start"> -->
+                        <plan-poste-table *ngIf="selectedIndex === 5" [idPlan]="getValue(_planCrudDetailService, property.plan.id)" [idPoste]="enumPoste.epargne"></plan-poste-table>
+                    <!-- </div>
+                </div> -->
+            </ng-template>
+        </mat-tab>
+</mat-tab-group>
+
+<!-- <div
+    [formGroup]="_planCrudDetailService.form.formGroup"
+    ngxsForm="planDetail"
+    *ngIf="_planCrudDetailService.formIsLoaded as loaded">
+    <plan-not-as-table [idPlan]="getValue(_planCrudDetailService, property?.plan?.id)"></plan-not-as-table>
+</div> -->
+
+

@@ -1,0 +1,70 @@
+<ng-container
+    ngxsForm="userDetail"
+    [formGroup]="_profileService.form.formGroup"
+    *ngIf="_profileService.form">
+
+    <div class="flex items-center mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:user-circle'"
+            matTooltip="pseudonyme"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.userName) }} </span>
+    </div>
+    <div class="flex items-center mt-4 mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:user'"
+            matTooltip="nom"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.firstName) }} {{ getValue(property.lastName) }} </span>
+    </div>
+    <div class="flex items-center mt-4 mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            svgIcon="mat_solid:email"
+            matTooltip="nom"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.email) }} </span>
+    </div>
+    <div class="flex items-center mt-4 mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:cake'"
+            matTooltip="date de naissance"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.dateOfBirth) |  date:'dd/MM/yyyy' }} ( {{ getValue(property.age) }} ans)</span>
+    </div>
+    <div class="flex items-center mt-4 mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:calendar'"
+            matTooltip="date création"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.dateCreated) |  date:'dd/MM/yyyy' }}</span>
+    </div>
+    <div class="flex items-center mt-4 mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:calendar'"
+            matTooltip="date dernière connexion"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.dateLastActive) |  date:'dd/MM/yyyy' }}  {{ getValue(property.userPreference.status) }}</span>
+    </div>
+
+    <hr class="w-full border-t my-6 mb-30">
+
+    <div class="flex items-center mx-6">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_solid:user-group'"
+            matTooltip="profil utilisateur"></mat-icon>
+        <span class="leading-none"> {{ getValue(property.role) }}</span>
+    </div>
+    <div class="flex items-center mt-4 mx-6 mb-30">
+        <mat-icon
+            class="icon-size-5 mr-3"
+            [svgIcon]="'heroicons_outline:ellipsis-horizontal-circle'"
+            matTooltip="statut utilisateur">
+        </mat-icon>
+        <span *ngIf="getValue(property.userPreference.status)==='online'" class="w-4 h-4 mr-3 rounded-full bg-green-500"></span>
+        <span *ngIf="getValue(property.userPreference.status)==='away'" class="w-4 h-4 mr-3 rounded-full bg-amber-500"></span>
+        <span *ngIf="getValue(property.userPreference.status)==='busy'" class="w-4 h-4 mr-3 rounded-full bg-red-500"></span>
+        <span *ngIf="getValue(property.userPreference.status)==='notVisible'" class="w-4 h-4 mr-3 rounded-full bg-gray-400"></span>
+    </div>
+</ng-container>
+

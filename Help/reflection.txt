@@ -1,0 +1,143 @@
+using Microsoft.AspNet.OData.Query;
+using OGR.MODEL;
+using OGR.MODEL.Database;
+using OGR.MODEL.Dto;
+using OGR.MODEL.Dto.FrontEnd;
+using OGR.SERVICE;
+using OGR.Wcf.Ordre;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Web.Http;
+
+
+namespace OGR.Controller
+{
+
+    [RoutePrefix("api/couvertures")]
+    [Authorize(Roles = "superviseur")]
+    public class CouvertureController : ApiController
+    {
+        private readonly IWcfCouverture _wcfCouverture;
+        private readonly ICouvertureService _couvertureService;
+        private readonly IMetronomeService _metronomeService;
+        private Dictionary<string, object> items = new Dictionary<string, object>();
+            
+
+        public CouvertureController(IWcfCouverture wcfCouverture,
+            ICouvertureService couvertureService,
+            IMetronomeService metronomeService)
+        {
+            _wcfCouverture = wcfCouverture;
+            _couvertureService = couvertureService;
+            _metronomeService = metronomeService;
+
+            items.Add("_couvertureService", _couvertureService);
+
+        }
+
+        [HttpGet]
+        [Corporate.OData.EnableCorporateOData]
+        [Route("queryable")]
+        public IHttpActionResult Queryable(ODataQueryOptions<Couverture> queryOptions)
+        {
+            return Ok(_couvertureService.Queryable(queryOptions));
+        }
+
+
+        //[HttpPost]
+        //[Route("table-filter")]
+        //public IHttpActionResult getTableFilter([FromBody] FilterCouvertureTableSelected filter)
+        //{
+        //    //_metronomeService.AutoValidateOrder();
+        //    return Ok(_wcfCouverture.getTableFilter(filter));
+        //}
+
+        //[HttpPost]
+        //[Route("filter")]
+        //public IHttpActionResult getTable([FromBody] FilterCouvertureTableSelected filter)
+        //{
+        //    //throw new Exception("erreur!");
+        //    return Ok(_wcfCouverture.getTable(filter));
+        //}
+
+        [HttpGet]
+        [Route("{idOrdre}/couverture-detail")]
+        public IHttpActionResult GetDetail(int? idOrdre)
+        {
+            //GenericClass<int> t = new GenericClass<int>(1);
+            //string typeName = "OGR.Model.GenericClass`1";
+            //Type openGenericClass = Type.GetType(typeName);
+
+            var toto = items["_couvertureService"];
+
+            Type assemGeneric = Assembly.Load("OGR.MODEL").GetTypes().Where(x=>x.Name== "GenericClass`1").FirstOrDefault();
+            Type assemAssociate = Assembly.Load("OGR.MODEL").GetTypes().Where(x => x.Name == "CouvertureForData").FirstOrDefault();
+            Type assemService = Assembly.Load("OGR").GetTypes().Where(x => x.Name == "CouvertureController").FirstOrDefault();
+            Type assem8 = Assembly.Load("OGR.SERVICE").GetTypes().Where(x => x.Name == "ICouvertureService").FirstOrDefault();
+
+            Type test = assemGeneric.MakeGenericType(assemAssociate);
+            object o = Activator.CreateInstance(test, Activator.CreateInstance(assemAssociate));
+
+            //var service = this.GetType().GetProperty("_couvertureService");
+            //var service = this.GetType().GetMember("_couvertureService");
+            var service = this.GetType().GetTypeInfo().GetDeclaredField("_couvertureService"); //.GetDeclaredFields();// ("_couvertureService");//.GetRuntimeProperty("_couvertureService"); //?.GetValue(src);
+                                                                                              // Get the type of FieldsClass.
+            FieldInfo field = this.GetType().GetField("_couvertureService",BindingFlags.Public |
+                                              BindingFlags.NonPublic |
+                                              BindingFlags.Instance);
+
+            //var pm = Activator.CreateInstance(assem8);
+            //object u = field.GetValue(this._couvertureService);
+
+
+            //var properties = this.GetType().GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            //var po = field.GetValue(null);
+            //PropertyInfo p = service.GetProperty("_couvertureService");
+ 
+            MethodInfo openGenericMethod = assem8.GetMethod("GetForData");
+            //object o2 = openGenericMethod.Invoke(_couvertureService, new object[] { 1006 });
+            object o2 = openGenericMethod.Invoke(toto, new object[] { 1006 });
+
+            //object service = Activator.CreateInstance(assemService);
+
+
+            //Type type = Type.GetType("CouvertureForData");
+            //object toto = Activator.CreateInstance(type);
+            //var toto = new toto<System.Activator.CreateInstance(Type.GetType("Class1")) > ();
+
+            return Ok(_wcfCouverture.GetForData(idOrdre));
+        }
+
+        [HttpPost]
+        [Route("couverture-detail-filter")]
+        public IHttpActionResult GetDetailFilter([FromBody] CouvertureForData couvertureForData)
+        {
+            return Ok(_wcfCouverture.GetDetailFilter(couvertureForData));
+        }
+
+        [HttpPost]
+        [Route("forcable-save/{forcableSave}/save-couverture")]
+        public IHttpActionResult Save(CouvertureForData couvertureForData, bool forcableSave)
+        {
+            try
+            {
+                int idOrdre = _wcfCouverture.Save(couvertureForData, forcableSave, this.User.Identity.Name);
+                return Ok(idOrdre);
+            }
+            catch (BusinessException e)
+            {
+
+                return Content(HttpStatusCode.BadRequest, e.BusinessExceptionMessages);
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+        }
+
+    }
+}

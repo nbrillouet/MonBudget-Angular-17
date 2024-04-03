@@ -1,0 +1,40 @@
+.parent {
+    position:relative;
+    border:1px solid #9E9E9E;
+    border-radius: 5px 5px 5px 5px;
+    background:#E5E5E5;
+}
+
+.child {
+    position:absolute;
+    color:white;
+    font-size:10px;
+    font-weight: bold;
+    top:2px;
+    left:35%;
+    // transform:translate(-50%,50%);
+}
+
+.progress {
+    transition: all 4s ease;
+    transition-delay: 1s;
+    border-radius: 5px 5px 5px 5px;
+    color:white;
+
+}
+
+.progress-green-full {
+    background:rgba(76,175,80,1);
+}
+
+.progress-green {
+    background:#ADDAAF;
+}
+
+.progress-orange {
+    background:#FFA500;
+}
+
+.progress-red {
+    background:#F44336;
+}

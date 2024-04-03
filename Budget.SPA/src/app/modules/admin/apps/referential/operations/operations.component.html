@@ -1,0 +1,47 @@
+<!-- *ngIf="_accountListService.isStateLoaded else tp_progress;" -->
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <operations-header></operations-header>
+
+    <!-- content -->
+    <div
+        class="flex-auto -mt-16 rounded-tl-2xl shadow bg-card bg-gray-100"
+        fuseScrollbar>
+        <ng-container [ngSwitch]="enumOperationsUrl">
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operationTypeFamily">
+                <otf-table></otf-table>
+            </ng-container>
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operationType">
+                <ot-table></ot-table>
+            </ng-container>
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operation">
+                <o-table></o-table>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <!-- footer -->
+    <footer>
+        <ng-container [ngSwitch]="enumOperationsUrl">
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operationTypeFamily">
+                <otf-table-footer></otf-table-footer>
+            </ng-container>
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operationType">
+                <ot-table-footer></ot-table-footer>
+            </ng-container>
+            <ng-container *ngSwitchCase="enumOperationsUrlList.operation">
+                <o-table-footer></o-table-footer>
+            </ng-container>
+        </ng-container>
+    </footer>
+</div>
+
+<!-- PROGRESS -->
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

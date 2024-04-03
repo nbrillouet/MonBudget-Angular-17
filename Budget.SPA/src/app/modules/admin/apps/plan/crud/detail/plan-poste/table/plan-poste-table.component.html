@@ -1,0 +1,13 @@
+<main
+    fuseScrollbar
+    class="flex-grow">
+    <mat-table-filter
+        [matTableFilter]="matTableFilter"
+        (rowClickEvent)="onRowClick($event)"
+        (changeFilterSelected)="applyFilterSelected($event)"
+        (changeFilterSelection)="applyFilterSelection($event)"
+        (toolbarAddItemEvent)="addItem($event)"
+        (toolbarDeleteItemsEvent)="deleteItems($event)"
+        [toolbarDeleteItemsAfter]="this._planPosteTableService.isDeleted">
+    </mat-table-filter>
+</main>

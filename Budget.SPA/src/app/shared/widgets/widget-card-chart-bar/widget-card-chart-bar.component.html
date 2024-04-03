@@ -1,0 +1,79 @@
+
+<div class="sm:col-span-2 lg:col-span-1 flex flex-col flex-auto bg-card shadow p-2 rounded-2xl overflow-hidden">
+    <div class="flex items-start justify-between m-3 mb-0">
+        <div class="text-lg font-medium tracking-tight leading-6 truncate">{{ widget.title.label }}</div>
+        <div class="ml-2">
+            <button
+                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                mat-button
+                [matMenuTriggerFor]="conversionMenu">
+                <span class="font-medium text-sm text-secondary">{{ widget.title.ratioAmount }}</span>
+            </button>
+            <mat-menu #conversionMenu="matMenu">
+                <button mat-menu-item>1 months</button>
+                <button mat-menu-item>3 months</button>
+                <button mat-menu-item>9 months</button>
+            </mat-menu>
+        </div>
+    </div>
+    <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
+        <!-- {{data.conversions.amount | number:'1.0-0'}} -->
+        <div class="text-5xl font-bold tracking-tighter leading-tight">
+            {{widget.title.averageAmount}} €
+        </div>
+        <div class="flex lg:flex-col lg:ml-3" *ngIf="widget.title.ratioAmount > 0">
+            <mat-icon
+                class="icon-size-5 text-green-500"
+                [svgIcon]="'heroicons_solid:trending-up'">
+            </mat-icon>
+            <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                <span class="font-medium text-green-500">{{widget.title.ratioAmount}}%</span>
+                <span class="ml-1">{{widget.title.ratioLabel}}</span>
+            </div>
+        </div>
+        <div class="flex lg:flex-col lg:ml-3" *ngIf="widget.title.ratioAmount < 0">
+            <mat-icon
+                class="icon-size-5 text-red-500"
+                [svgIcon]="'heroicons_solid:trending-down'">
+            </mat-icon>
+            <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                <span class="font-medium text-red-500">{{widget.title.ratioAmount}}%</span>
+                <span class="ml-1">{{widget.title.ratioLabel}}</span>
+            </div>
+        </div>
+        <div class="flex lg:flex-col lg:ml-3" *ngIf="widget.title.ratioAmount === 0">
+            <mat-icon
+                class="icon-size-5 text-grey-500"
+                [svgIcon]="'heroicons_solid:trending-down'">
+            </mat-icon>
+            <div class="flex items-center ml-1 lg:ml-0 lg:mt-0.5 text-md leading-none whitespace-nowrap text-secondary">
+                <span class="font-medium text-grey-500">{{widget.title.ratioAmount}}%</span>
+                <span class="ml-1">{{widget.title.ratioLabel}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- [colors]="" -->
+    <div class="flex flex-col flex-auto h-30">
+        <!-- [datasets]="widget.datasets"
+        [labels]="widget.labels" -->
+
+        <!-- [type]="widget.chart?.type" -->
+        <canvas *ngIf="widget" baseChart
+            [data]="widget.chart?.data"
+            [options]="widget.chart?.options"
+
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"
+        >
+      </canvas>
+        <!-- <canvas baseChart
+                [datasets]="widget.datasets"
+                [labels]="widget.labels"
+
+                [options]="widget.options"
+                [type]="widget.chartType"
+                (chartClick)="chartClicked($event)">
+        </canvas> -->
+    </div>
+</div>

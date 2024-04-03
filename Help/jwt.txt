@@ -1,0 +1,36 @@
+--> sert à injecter le token dans chaque requete envoyé au serveur
+
+[advanced and factorise configuration]
+--> creer nouveau module (nommé: auth) au niveau du app : 
+--> copier le code ci dessous dans le fichier .ts:
+--> remplacer 'token' par le nom du token utilisé pour l'application
+
+import { NgModule } from '@angular/core';
+import { Http, RequestOptions } from '@angular/http';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenName: 'token',
+		tokenGetter: (() => localStorage.getItem('token')),
+		globalHeaders: [{'Content-Type':'application/json'}],
+	}), http, options);
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    }
+  ]
+})
+export class AuthModule {}
+
+--> ajouter AuthModule dans le module de l'application (dans import)
+--> au lieu d'utiliser Http pour faire des requetes, on utilisera donc AuthHttp
+exemple dans un service:
+constructor(
+        private authHttp: AuthHttp
+    ) { }

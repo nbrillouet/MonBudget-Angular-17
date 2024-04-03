@@ -1,0 +1,207 @@
+<div
+    [formGroup]="_gMapSearchService.form.formGroup"
+    ngxsForm="gMapDetail"
+    *ngIf="property as loaded else tp_progress">
+
+<fuse-card
+    class="flex flex-col"
+    [flippable]="true"
+    #fuseCard>
+    <ng-container fuseCardFront>
+        <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-4">
+            <div class="flex flex-col">
+                <span class="font-semibold leading-none text-primary">Localisation</span>
+                <span class="text-sm text-secondary leading-none mt-1">Informations</span>
+            </div>
+            <!-- *ngIf="!(_profileService.state$ | async)?.loader['user-detail-save']?.loading" -->
+            <button
+                class="ml-auto -mr-4"
+                mat-icon-button
+                matTooltip="Edition"
+                (click)="fuseCard.face = 'back'">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_outline:pencil'">
+                </mat-icon>
+            </button>
+        </div>
+
+        <ng-container *ngTemplateOutlet="tp_card_front"></ng-container>
+    </ng-container>
+
+    <ng-container fuseCardBack>
+        <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-4">
+            <div class="flex flex-col">
+                <span class="font-semibold leading-none text-primary">Localisation</span>
+                <span class="text-sm text-secondary leading-none mt-1">Recherche</span>
+            </div>
+            <button
+                class="ml-auto -mr-4"
+                mat-icon-button
+                (click)="fuseCard.face = _gMapSearchService.isEmpty ? 'back' : 'front'">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_outline:arrow-left'"></mat-icon>
+            </button>
+        </div>
+
+        <ng-container *ngTemplateOutlet="tp_card_back"></ng-container>
+    </ng-container>
+</fuse-card>
+
+
+
+
+
+
+    <ng-template #tp_card_front>
+        <div class="grid grid-cols-6 gap-2 justify-items-start p-3">
+            <div class="col-span-4" *ngIf="!_gMapSearchService.isEmpty">
+                <google-map
+                    height="400"
+                    [center]="position"
+                    [zoom]="zoom">
+                    <map-marker
+                        [position]="position"
+                        [animation]="animation">
+                    </map-marker>
+                </google-map>
+            </div>
+
+            <div class="mx-2 my-2 col-span-2">
+                <div class="leading-none text-primary">
+                    {{ getValue(property.datas.formattedAddress) }}
+                </div>
+                <br>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapCountry)?.id)">
+                    <div>Pays: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapCountry)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapAdministrativeAreaLevel1)?.id)">
+                    <div>Région: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapAdministrativeAreaLevel1)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapAdministrativeAreaLevel2)?.id)">
+                    <div>Département: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapAdministrativeAreaLevel2)?.label}}</div>
+                </div>
+                <br>
+                <mat-divider></mat-divider>
+                <br>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapNeighborhood)?.id)">
+                    <div>Quartier: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapNeighborhood)?.label }} {{ getValue(property.datas.gMapNeighborhood)?.id }}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapStreetNumber)?.id)">
+                    <div>N° Rue: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapStreetNumber)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapRoute)?.id)">
+                    <div>Nom de Rue: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapRoute)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapPostalCode)?.id)">
+                    <div>Code Postal: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapPostalCode)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapLocality)?.id)">
+                    <div>Localité: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapLocality)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapSublocalityLevel1)?.id)">
+                    <div>Sous localité niveau 1: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapSublocalityLevel1)?.label}}</div>
+                </div>
+                <div class="flex justify-between" *ngIf="!isUnknownData(getValue(property.datas.gMapSublocalityLevel2)?.id)">
+                    <div>Sous localité niveau 2: </div>
+                    <div class="text-primary">{{ getValue(property.datas.gMapSublocalityLevel2)?.label}}</div>
+                </div>
+                <br>
+                <mat-divider></mat-divider>
+                <br>
+                <div class="pb-2">Types d'établissement:</div>
+                <div class="flex justify-start">
+                    <mat-chip-listbox>
+                        <mat-chip-option *ngFor="let type of (_gMapSearchService.stateDetail$ | async)?.model?.datas?.gMapTypes">
+                            {{ type.label ? type.label : type.code }}
+                            <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
+                        </mat-chip-option>
+                    </mat-chip-listbox>
+                    <!-- <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let type of (_gMapSearchService.stateDetail$ | async)?.model?.datas?.gMapTypes"
+                            [removable]="true" (removed)="remove(type)" >
+                            {{ type.label ? type.label : type.code }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <input
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="true"
+                            (matChipInputTokenEnd)="addGMapType($event)">
+                    </mat-chip-list> -->
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="grid grid-cols-1 place-items-center pb-20"
+            *ngIf="_gMapSearchService.isEmpty">
+            <mat-icon
+                class="icon-size-24"
+                svgIcon="heroicons_outline:map-pin"></mat-icon>
+            <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">localisation inconnue</div>
+        </div>
+    </ng-template>
+
+    <ng-template #tp_card_back>
+        <div class="mx-2 ">
+            <div><ng-container *ngTemplateOutlet="tp_operation_position_search"></ng-container></div>
+            <div><ng-container *ngTemplateOutlet="tp_operation_place_search"></ng-container></div>
+            <div class="grid justify-items-end">
+                <button
+                    mat-mini-fab
+                    (click)="searchGoogleMap()">
+                    <mat-icon style="color:white">language</mat-icon>
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+
+
+    <!-- ============================================================================== -->
+    <!-- =========================       FORM TEMPLATE     ============================ -->
+    <!-- ============================================================================== -->
+    <ng-template #tp_operation_position_search>
+        <ng-container formGroupName="filter">
+            <mat-form-field class="w-full">
+                <mat-label>Indicatif position opération</mat-label>
+                <input
+                    matInput
+                    placeholder="(nom magasin / restaurant...)"
+                    [attr.data-cy]="getProperty(property.filter.operationPositionSearch)"
+                    [formControlName]="getProperty(property.filter.operationPositionSearch)">
+            </mat-form-field>
+        </ng-container>
+    </ng-template>
+
+    <ng-template #tp_operation_place_search>
+        <ng-container formGroupName="filter">
+            <mat-form-field class="w-full">
+                <mat-label>Indicatif lieu opération</mat-label>
+                <input
+                    matInput
+                    placeholder="(pays / ville / departement...)"
+                    [attr.data-cy]="getProperty(property.filter.operationPlaceSearch)"
+                    [formControlName]="getProperty(property.filter.operationPlaceSearch)">
+            </mat-form-field>
+        </ng-container>
+    </ng-template>
+</div>
+
+<ng-template #tp_progress>
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+</ng-template>

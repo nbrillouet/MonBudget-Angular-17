@@ -1,0 +1,26 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" >
+    <!-- HEADER -->
+    <plan-crud-table-header></plan-crud-table-header>
+
+    <!-- CONTENT -->
+    <ng-container>
+        <main
+            fuseScrollbar
+            class="flex-grow">
+            <mat-table-filter
+                [matTableFilter]="matTableFilter"
+                (rowClickEvent)="onRowClick($event)"
+                (changeFilterSelected)="applyFilterSelected($event)"
+                (changeFilterSelection)="applyFilterSelection($event)"
+                (toolbarAddItemEvent)="addItem($event)"
+                (toolbarDeleteItemsEvent)="deleteItems($event)">
+            </mat-table-filter>
+        </main>
+        <footer class="h-14 dark">
+            <mat-table-filter-paginator
+                [matTableFilterSelected$]="_planCrudTableService.stateSelected$"
+                (changeFilterSelected)="applyFilterSelected($event)">
+            </mat-table-filter-paginator>
+        </footer>
+    </ng-container>
+</div>

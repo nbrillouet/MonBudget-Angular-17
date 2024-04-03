@@ -1,0 +1,89 @@
+installation:
+ng new app-redux
+npm install redux ng2-redux --save
+npm update
+npm install tassign --save 
+npm install immutable --save
+
+pour redux devtools:
+dans app.module.ts ajouter DevToolsExtension dans:
+import { NgRedux, NgReduxModule} from 'ng2-redux';
+import { NgModule, isDevMode } from '@angular/core';
+
+et dans classe appModule:
+export class AppModule { 
+  constructor(ngRedux: NgRedux<IAppState>, devTools: DevToolsExtension) {
+      var enhancers = isDevMode() ? [devTools.enhancer()] : [];
+		  ngRedux.configureStore(rootReducer, INITIAL_STATE, [], enhancers );
+	}
+}
+
+
+dans app.module:
+import { NgRedux, NgReduxModule} from 'ng2-redux';
+import { IAppState, rootReducer } from './store';
+-->imports {
+	BrowserModule,
+	NgReduxModule
+ }
+ 
+ --> export class AppModule {
+	constructor(ngRedux: NgRedux<IAppState>) {
+		ngRedux.configureStore(rootReducer, {});
+	}
+ }
+
+
+library qui aide à gerer l'etat de l'application.
+-Manage the application in a predicable way
+-decoupled architecture (peut utiliser angular ou re act ou..)
+-testability : redux utilise de simple fonction avec entré sorti facilement testable
+-Great tooling: ie redux developer tool extension pour debugger facilement
+-undo/redo : cette fonctionalité est facilement faisable avec redux
+
+Quand utilisé Redux:
+-Independant copies of the same data in multiple places
+-Multiple views that need to work with the same data and be in sync
+-Data can be updated by multiple users
+-Data can be updated by multiple actors
+
+[Building blocks]
+Dans Redux on a 3 parties:
+-Store (=state)		: a single JS object that contains the state of the application (comme une database local)
+-Actions			: Plain Js objects that represent something that has happened
+-Reducers			: A function htat specifies how the state changes in response to action.
+						A reducer does not modify the state. It returns the new state
+				
+[Pure function: reducers]
+une fonction est pure quand:
+-same input => same output
+-no side effects
+
+==>exemple fonction impure:
+entré differente de sortie:
+function increment(input) {
+	input.count++;
+}
+
+Side effect:
+function increment(input) {
+	service.addMessage(...);
+}
+
+==> exemple fonction pure:
+function increment(input) {
+	return { count: input.count + 1};
+}
+
+==> reducer fonction:
+function reducer(state, action) {
+	switch (action.type) {
+		case 'INCREMENT':
+			return { count: state.count +1 };
+	}
+}
+
+Avantage des fonctions pures:
+Easy testability
+Easy undo/redo
+time travel debugging (on peut voir l'historique des actions)

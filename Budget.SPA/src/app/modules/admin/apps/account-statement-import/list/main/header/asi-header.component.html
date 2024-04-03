@@ -1,0 +1,40 @@
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 dark"
+        [ngStyle]="{'background-image':' url(' + (_userLoggedService.userLoggedState$ | async)?.datas?.userPreference.bannerUrl + ')'}"
+        style="background-repeat:no-repeat; background-position: right;" >
+
+        <div class="flex-1 min-w-0">
+            <div>
+                <div class="text-4xl text-primary font-extrabold tracking-tight leading-none">Import relevés bancaires</div>
+                <div class="flex items-center mt-0.5 font-medium text-gray-50">
+                    <ng-container *ngIf="!(_asiService.state$ | async)?.datas.idFolder">
+                        <!-- (_asiService.state$ | async)? -->
+                        {{ (_asiService.state$ | async)?.datas.countFolder }} folders, {{ (_asiService.state$ | async)?.datas.countFile }} files
+                    </ng-container>
+                    <!-- Breadcrumbs -->
+                    <ng-container *ngIf="(_asiService.state$ | async)?.datas.idFolder">
+                        <div class="flex items-center space-x-2">
+                            <a
+                                class="text-primary cursor-pointer"
+                                [routerLink]="['/apps/account-statement-import']">Home
+                            </a>
+                            <div>/ {{ (_asiService.state$ | async)?.datas.folders[0].label }} </div>
+                         </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <asi-upload
+                (fileError)="getFileError($event)"
+                (fileSuccess)="getFileSuccess($event)"
+                (fileInProgress)="getFileInProgress($event)"
+                (uploadResponse)="getUploadResponse($event)">
+            </asi-upload>
+        </div>
+    </div>
+
+
