@@ -1,0 +1,38 @@
+﻿[
+  {
+    "section": "UserInformation",
+    "category": "Referential",
+    "title": "Référentiel",
+    "subTitle": "Informations utilisateur incomplètes",
+    "content": "Vos informations utilisateurs sont incomplètes",
+    "warning":  "orange",
+    "link": "/apps/referential/users/{idUser}/detail"
+  },
+  {
+    "section": "AccountNoAccount",
+    "category": "Referential",
+    "title": "Référentiel",
+    "subTitle": "Aucun compte affecté",
+    "content": "Vous n'avez aucun compte disponible",
+    "warning": "red",
+    "link": "/apps/referential/accounts/new/detail"
+  },
+  {
+    "section": "AsInternalTransferOrphan",
+    "category": "AccountStatement",
+    "title": "Relevé de comptes",
+    "subTitle": "Virement(s) interne(s) isolé(s)",
+    "content": "{asIsolatedCount} virement(s) interne(s) isolé(s).",
+    "warning": "red",
+    "link": "/apps/referential/accounts/new/detail"
+  },
+  {
+    "section": "AsLast",
+    "category": "AccountStatement",
+    "title": "Relevé de comptes",
+    "subTitle": "retard dans importation de relevés",
+    "content": "Date du dernier import pour le compte {accountNumber} : {dateImport}",
+    "warning": "green",
+    "link": "/apps/referential/accounts/new/detail"
+  }
+]

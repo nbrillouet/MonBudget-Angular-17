@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Budget.MODEL.Enum
+{
+    public enum EnumOperationPlace
+    {
+        INCONNU = 1,
+        NA = 2,
+        INTERNET = 3,
+        GEO = 4
+    }
+}
